@@ -4,29 +4,25 @@ using namespace std;
 
 int numberOfRectangles;
 
-class Point
-{
+class Point {
     public:
         long long x_coord;
         long long y_coord;
 };
 
-class Interval
-{
+class Interval {
     public:
         long long lower;
         long long upper;
 };
 
-class LineSegment
-{
+class LineSegment {
     public:
         Interval interval;
         long long coord;
 };
 
-class Rectangle
-{
+class Rectangle {
     public:
         long long xLeft;
         long long xRight;
@@ -37,30 +33,26 @@ class Rectangle
         Interval yInterval;
 };
 
-class EdgeType
-{
+class EdgeType {
     public:
         string type;
 };
 
-class Edge
-{
+class Edge {
     public:
         long long coord;
         Interval interval;
         EdgeType side;
 };
 
-class Stripe
-{
+class Stripe {
     public:
         Interval xInterval;
         Interval yInterval;
         set<Interval> xUnion;
 };
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
     cout<<"Enter the number of rectangles that you would like to input: ";
     cin>>numberOfRectangles;
 
