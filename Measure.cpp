@@ -2,14 +2,15 @@
 using namespace std;
 
 //All global variables to be declared here
-int numberOfRectangles;
-
-unordered_set<string> edgeType { "left", "right", "bottom", "top" };
+/*!
+    This code is an implementation of the algorithm as shown in the paper
+ */
+int numberOfRectangles;         ///<The number of rectangles as given by the user
+unordered_set<string> edgeType { "left", "right", "bottom", "top" };    ///<set of all possible edgetypes
 
 //All utility functions that the classes use to be declared here
 template<class Container, class Contained>
 bool contains(Container A, Contained B) {
-
     if(A.find(B) != A.end()) {
         return true;
     }
@@ -73,6 +74,7 @@ class EdgeType {
         EdgeType(string s) {
             assert(contains(edgeType, s));
         }
+        EdgeType(){ }
 };
 
 template<typename T = long long>
@@ -81,6 +83,16 @@ class Edge {
         T coord;
         Interval<T> interval;
         EdgeType side;
+
+        Edge(T _coord, Interval<T> _interval, string _side) {
+            coord = _coord;
+            interval = _interval;
+            side = _side;
+        }
+        Edge(string type) {
+            EdgeType edgetype(type);
+            side = edgetype;
+        }
 };
 
 template<class T = long long>
@@ -99,9 +111,20 @@ class Partition {
 
 //The important functions go here
 set<Stripe<>> RECTANGLE_DAC(set<Rectangle<>> rect) {
+
+    vector<Edge<>> verticalEdges;
+
     for(auto rectangle : rect) {
-        //TODO seperate the given rectangles into vertical edges
+        Edge<> leftVerticalEdge(rectangle.xLeft, rectangle.yInterval, "left");
+        Edge<> rightVerticalEdge(rectangle.xRight, rectangle.yInterval, "right");
+
+        verticalEdges.push_back(leftVerticalEdge);
+        verticalEdges.push_back(rightVerticalEdge);
     }
+
+    sort(verticalEdges.begin(), verticalEdges.end(), [&] (Edge<> e1, Edge<> e2) {
+                return e1.coord < e2.coord;
+            });
 }
 
 int main(int argc, char* argv[]) {
