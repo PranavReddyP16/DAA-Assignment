@@ -110,19 +110,21 @@ class Partition {
 };
 
 //The important functions go here
-set<Stripe<>> RECTANGLE_DAC(set<Rectangle<>> rect) {
 
-    vector<Edge<>> verticalEdges;
+template<class T = long long>
+set<Stripe<T>> RECTANGLE_DAC(set<Rectangle<T>> rect) {
+
+    vector<Edge<T>> verticalEdges;
 
     for(auto rectangle : rect) {
-        Edge<> leftVerticalEdge(rectangle.xLeft, rectangle.yInterval, "left");
-        Edge<> rightVerticalEdge(rectangle.xRight, rectangle.yInterval, "right");
+        Edge<T> leftVerticalEdge(rectangle.xLeft, rectangle.yInterval, "left");
+        Edge<T> rightVerticalEdge(rectangle.xRight, rectangle.yInterval, "right");
 
         verticalEdges.push_back(leftVerticalEdge);
         verticalEdges.push_back(rightVerticalEdge);
     }
 
-    sort(verticalEdges.begin(), verticalEdges.end(), [&] (Edge<> e1, Edge<> e2) {
+    sort(verticalEdges.begin(), verticalEdges.end(), [&] (Edge<T> e1, Edge<T> e2) {
                 return e1.coord < e2.coord;
             });
 }
