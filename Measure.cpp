@@ -1,6 +1,9 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+template<typename T>
+const T inf = 1e18;
+
 //All global variables to be declared here
 /*!
     This code is an implementation of the algorithm as shown in the paper
@@ -127,6 +130,29 @@ set<Stripe<T>> RECTANGLE_DAC(set<Rectangle<T>> rect) {
     sort(verticalEdges.begin(), verticalEdges.end(), [&] (Edge<T> e1, Edge<T> e2) {
                 return e1.coord < e2.coord;
             });
+}
+
+template<class T = long long>
+set<Stripe<T>> computeStripes (
+        vector<Edge<T>> verticalEdges,
+        Interval<T> x_ext,
+        vector<Interval<T>> L,
+        vector<Interval<T>> R,
+        vector<Point<T>> partition,
+        set<Stripe<T>> stripes) {
+    
+    if((T)verticalEdges.size() == 1) {
+        Edge<T> v = verticalEdges[0];
+
+        if(v.side == "left") {
+            L.push_back(v.interval);
+        }
+        else if(v.side == "right") {
+            R.push_back(v.interval);
+        }
+
+        partition = {-inf<T>, v.interval.lower, v.interval.lower, inf<T>};
+    }
 }
 
 int main(int argc, char* argv[]) {
