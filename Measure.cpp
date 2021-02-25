@@ -104,6 +104,14 @@ class Stripe {
         Interval<T> xInterval;
         Interval<T> yInterval;
         set<Interval<T>> xUnion;
+
+        Stripe(Interval<T> xInt, Interval<T> yInt, set<Interval<T>> xUn) {
+            xInterval = xInt;
+            yInterval = yInt;
+            xUnion = xUn;
+        }
+
+        Stripe() {  };
 };
 
 template<typename T = long long>
@@ -142,16 +150,24 @@ set<Stripe<T>> computeStripes (
         set<Stripe<T>> stripes) {
     
     if((T)verticalEdges.size() == 1) {
+
+        Stripe<T> S;
         Edge<T> v = verticalEdges[0];
 
         if(v.side == "left") {
             L.push_back(v.interval);
-        }
-        else if(v.side == "right") {
-            R.push_back(v.interval);
+            S = {x_ext, v.yInterval, {{v.coord, x_ext.upper}}};
         }
 
+        else if(v.side == "right") {
+            R.push_back(v.interval);
+            S = {x_ext, v.yInterval, {{x_ext.lower, v.coord}}};
+        }
+
+        stripes.insert(S);
         partition = {-inf<T>, v.interval.lower, v.interval.lower, inf<T>};
+
+        return stripes;
     }
 }
 
