@@ -149,7 +149,7 @@ set<Stripe<T>> computeStripes (
         vector<Point<T>> partition,
         set<Stripe<T>> stripes) {
     
-    if((T)verticalEdges.size() == 1) {
+    if(verticalEdges.size() == 1) {
 
         Stripe<T> S;
         Edge<T> v = verticalEdges[0];
@@ -168,6 +168,10 @@ set<Stripe<T>> computeStripes (
         partition = {-inf<T>, v.interval.lower, v.interval.lower, inf<T>};
 
         return stripes;
+    }
+
+    else {
+        
     }
 }
 
