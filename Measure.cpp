@@ -120,6 +120,15 @@ class Partition {
         vector<T> ySet;
 };
 
+template<typename T = long long>
+struct ReturnSet{
+    
+        vector<Interval<T>> L;
+        vector<Interval<T>> R;
+        vector<Point<T>> partition;
+        set<Stripe<T>> stripes;
+};
+
 //The important functions go here
 
 template<class T = long long>
@@ -141,12 +150,12 @@ set<Stripe<T>> RECTANGLE_DAC(set<Rectangle<T>> rect) {
 }
 
 template<class T = long long>
-set<Stripe<T>> computeStripes (
+struct ReturnSet<T> computeStripes (
         vector<Edge<T>> verticalEdges,
         Interval<T> x_ext,
         vector<Interval<T>> L,
         vector<Interval<T>> R,
-        vector<Point<T>> partition,
+        vector<T> partition,
         set<Stripe<T>> stripes) {
     
     if(verticalEdges.size() == 1) {
@@ -165,13 +174,26 @@ set<Stripe<T>> computeStripes (
         }
 
         stripes.insert(S);
-        partition = {-inf<T>, v.interval.lower, v.interval.lower, inf<T>};
+        partition = {-inf<T>, v.interval.lower, v.interval.upper, inf<T>};
 
-        return stripes;
+        return {L,R,partition,stripes};
     }
 
     else {
-        
+        T xMedian = verticalEdges.size()/2;
+
+        vector<Edge<T>> V1,V2;
+        for(int i=0;i<verticalEdges.size();i++) {
+            if(i<xMedian) V1.push_back(verticalEdges[i]);
+            else V2.push_back(verticalEdges[i]);
+        }
+
+        vector<Interval<T>> L1,L2,R1,R2;
+        vector<Point<T>> P1, P2;
+        set<Stripe<T>> S1,S2;
+
+        ReturnSet<T> leftSubProblem = computeStripes(V1, {x_ext.bottom, xMedian}, L1, R1, P1, S1);
+        ReturnSet<T> rightSubProblem = computeStripes(V2, {xMedian,x_ext.top}, L2, R2, P2, S2);
     }
 }
 
