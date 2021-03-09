@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include <regex>
 using namespace std;
 #define T long long
 
@@ -9,7 +10,7 @@ const T inf = 1e18;
     This code is an implementation of the algorithm as shown in the paper
  */
 long long numberOfRectangles;         ///<The number of rectangles as given by the user
-unordered_set<string> edgeType { "left", "right", "bottom", "top" };    ///<set of all possible edgetypes
+set<string> edgeType { "left", "right", "bottom", "top" };    ///<set of all possible edgetypes
 
 //All utility functions that the classes use to be declared here
 
@@ -24,6 +25,10 @@ class Interval {
     public:
         T lower;
         T upper;
+
+        bool operator < (Interval const &Int) const {
+            return lower<Int.lower;
+        }
 };
 
 class LineSegment {
@@ -47,6 +52,11 @@ class Rectangle {
             xInterval.lower = min(x1,x2);
             yInterval.upper = max(y1,y2);
             yInterval.lower = min(y1,y2);
+
+            xLeft = x1;
+            xRight = x2;
+            yLeft = y1;
+            yRight = y2;
         }
 
         Rectangle(Interval X, Interval Y) {
@@ -54,9 +64,18 @@ class Rectangle {
             xRight = max(X.lower, X.upper);
             yLeft = min(Y.lower, Y.upper);
             yRight = max(Y.lower, Y.upper);
+
+            xInterval.lower = X.lower;
+            xInterval.upper = X.upper;
+            yInterval.lower = Y.lower;
+            yInterval.upper = Y.upper;
         }
 
         Rectangle() { };
+
+        bool operator < (Rectangle const &r) const {
+            return xLeft < r.xLeft;
+        }
 };
 
 class EdgeType {
@@ -78,7 +97,7 @@ class Edge {
         Edge(T _coord, Interval _interval, string _side) {
             coord = _coord;
             interval = _interval;
-            side = _side;
+            side.type = _side;
         }
         Edge(string type) {
             EdgeType edgetype(type);
@@ -99,6 +118,10 @@ class Stripe {
         }
 
         Stripe() {  };
+
+        bool operator < (const Stripe s) const {
+            return yInterval.lower < s.yInterval.lower;
+        }
 };
 
 class Partition {
@@ -110,75 +133,218 @@ struct ReturnSet{
     
         set<Interval> L;
         set<Interval> R;
-        set<Point> partition;
+        set<T> partition;
         set<Stripe> stripes;
 };
 
-//set<Stripe> copy(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
-//    set<Stripe> ans;
-//
-//    map<Interval, Stripe> reverseMap;
-//    vector<T> unionPartition;
-//    vector<T> partition;
-//    for(auto p : P) {
-//        unionPartition.push_back(p);
-//    }
-//    for(auto p1 : P1) {
-//        partition.push_back(p1);
-//    }
-//
-//    for(auto s : S) {
-//        reverseMap[s.yInterval] = s;
-//    }
-//
-//
-//    int pointer1=0,pointer2=0;
-//    for(int i=0;i<(int)unionPartition.size()-1;i++) {
-//        Stripe s;
-//        s.yInterval = {partition[i], partition[i+1]};
-//        s.xInterval = x_int;
-//
-//        while((pointer1+1 < partition.size() && pointer2 < unionPartition.size()) && unionPartition[pointer2] > partition[pointer1+1]) {
-//            pointer1++;
-//        }
-//        pointer2++;
-//
-//        s.xUnion = reverseMap[{partition[pointer1], partition[pointer1+1]}].xUnion;
-//
-//        ans.insert(s);
-//    }
-//
-//    return ans;
-//}
-//
-//set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
-//    vector<T> partition;
-//    for(auto p : P) {
-//        partition.push_back(p);
-//    }
-//
-//    for(int i=0;i<(int)partition.size()-1;i++) {
-//        Stripe s;
-//        s.xInterval = x_int;
-//        s.yInterval = {partition[i], partition[i+1]};
-//    }
-//}
+set<Stripe> copy(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
+    set<Stripe> ans;
 
-set<Interval> intervalIntersection(vector<Interval> L1, vector<Interval> R2) {
+    map<Interval, Stripe> reverseMap;
+    vector<T> unionPartition;
+    vector<T> partition;
+    for(auto p : P) {
+        unionPartition.push_back(p);
+    }
+    for(auto p1 : P1) {
+        partition.push_back(p1);
+    }
+
+    for(auto s : S) {
+        reverseMap[s.yInterval] = s;
+    }
+
+
+    int pointer1=0,pointer2=0;
+    for(int i=0;i<(int)unionPartition.size()-1;i++) {
+        Stripe s;
+        s.yInterval = {unionPartition[i], unionPartition[i+1]};
+        s.xInterval = x_int;
+
+        //TODO this might be the cause of an error check this later
+        s.xUnion = reverseMap[{partition[pointer1], partition[pointer1+1]}].xUnion;
+
+        while(pointer1+1 < partition.size() && unionPartition[pointer2] > partition[pointer1+1]) {
+            pointer1++;
+        }
+        pointer2++;
+
+        ans.insert(s);
+    }
+
+    return ans;
+}
+
+set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
+    vector<T> partition;
+    for(auto p : P) {
+        partition.push_back(p);
+    }
+
+    for(int i=0;i<(int)partition.size()-1;i++) {
+        Stripe s;
+        s.xInterval = x_int;
+        s.yInterval = {partition[i], partition[i+1]};
+    }
+}
+
+set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2) {
     map<Interval, int> cnt;
-    for(int i=0;i<(int)L1.size();i++) {
-        cnt[L1[i]]++;
+    for(auto l1 : L1) {
+        cnt[l1]++;
     }
 
     set<Interval> ans;
-    for(int i=0;i<(int)R2.size();i++) {
-        if(cnt[R2[i]]>0) ans.insert(R2[i]);
+    for(auto r2 : R2) {
+        if(cnt[r2] > 0) ans.insert(r2);
     }
 
     return ans;
 }
 
 //The important functions go here
+struct ReturnSet computeStripes (
+        vector<Edge> verticalEdges,
+        Interval x_ext,
+        set<Interval> L,
+        set<Interval> R,
+        set<T> partition,
+        set<Stripe> stripes) {
+    
+    //cerr<<"Size of vertical edges is: "<<verticalEdges.size()<<endl;
+    if(verticalEdges.size() == 1) {
+
+        Stripe S;
+        Edge v = verticalEdges[0];
+
+        stripes.insert({x_ext, {-inf, v.interval.lower}, {}});
+
+        //cerr<<"the edgetype is: "<<v.side.type<<endl;
+        if(v.side.type == "left") {
+            L.insert(v.interval);
+            S = {x_ext, v.interval, {{v.coord, x_ext.upper}}};
+        }
+
+        else if(v.side.type == "right") {
+            R.insert(v.interval);
+            S = {x_ext, v.interval, {{x_ext.lower, v.coord}}};
+        }
+
+        stripes.insert(S);
+        stripes.insert({x_ext, {v.interval.upper, inf}, {}});
+
+        partition = {-inf, v.interval.lower, v.interval.upper, inf};
+
+        return {L,R,partition,stripes};
+    }
+
+    else {
+        T xMedian = verticalEdges.size()/2;
+
+        //splitting vertical edges into two equal sized groups
+        vector<Edge> V1,V2;
+        for(int i=0;i<verticalEdges.size();i++) {
+            if(i<xMedian) V1.push_back(verticalEdges[i]);
+            else V2.push_back(verticalEdges[i]);
+        }
+
+        //creating empty containers for the subtasks to fill up
+        set<Interval> L1,L2,R1,R2;
+        set<T> P1, P2;
+        set<Stripe> S1,S2;
+        set<Interval> LR;
+
+        //Solving the subtasks
+        cout<<"Before recursion call"<<endl;
+        ReturnSet leftSubProblem;
+        ReturnSet rightSubProblem;
+        if(V1.size() > 0) leftSubProblem = computeStripes(V1, {x_ext.lower, xMedian}, L1, R1, P1, S1);
+        if(V2.size() > 0) rightSubProblem = computeStripes(V2, {xMedian,x_ext.upper}, L2, R2, P2, S2);
+        cout<<"After recursion call"<<endl;
+
+        //DEBUGGING
+        
+        
+        cerr<<"This is for the left sub problem\n";
+        cerr<<"This is L:\n";
+        for(auto l : leftSubProblem.L) {
+            cerr<<l.lower<<" "<<l.upper<<endl;
+        }
+        cerr<<"This is R:\n";
+        for(auto r : leftSubProblem.R) {
+            cerr<<r.lower<<" "<<r.upper<<endl;
+        }
+        cerr<<"This is partition:\n";
+        for(auto p : leftSubProblem.partition) {
+            cerr<<p<<" ";
+        }
+        cerr<<endl;
+        
+        cerr<<"This is for the right sub problem\n";
+        cerr<<"This is L:\n";
+        for(auto l : rightSubProblem.L) {
+            cerr<<l.lower<<" "<<l.upper<<endl;
+        }
+        cerr<<"This is R:\n";
+        for(auto r : rightSubProblem.R) {
+            cerr<<r.lower<<" "<<r.upper<<endl;
+        }
+        cerr<<"This is partition:\n";
+        for(auto p : rightSubProblem.partition) {
+            cerr<<p<<" ";
+        }
+        cerr<<endl;
+
+        //END DEBUGGING
+
+        //Using a function to find the intersection of L1 and R2 in O(nlogn) time complexity
+        LR = intervalIntersection(leftSubProblem.L, rightSubProblem.R);
+
+        cerr<<"The elements in the set LR are: "<<endl;
+        for(auto x : LR) {
+            cerr<<x.lower<<" "<<x.upper<<endl;
+        }
+
+        //Inserting all the useful edges into L and R. Basically removing all the edges that belong to LR. Time complexity is O(nlogn).
+        for(auto l1 : leftSubProblem.L) {
+            if(LR.find(l1)==LR.end()) L.insert(l1);
+        }
+        for(auto l2 : rightSubProblem.L) {
+            L.insert(l2);
+        }
+        for(auto r1 : leftSubProblem.R) {
+            R.insert(r1);
+        }
+        for(auto r2 : rightSubProblem.R) {
+            if(LR.find(r2)==LR.end()) R.insert(r2);
+        }
+        for(auto p1 : leftSubProblem.partition) {
+            partition.insert(p1);
+        }
+        for(auto p2 : rightSubProblem.partition) {
+            partition.insert(p2);
+        }
+
+        //more print statements
+        cerr<<"the elements in L are:"<<endl;
+        for(auto x : L) {
+            cerr<<x.lower<<" "<<x.upper<<endl;
+        }
+        cerr<<"the elements in R are:"<<endl;
+        for(auto x : R) {
+            cerr<<x.lower<<" "<<x.upper<<endl;
+        }
+        cerr<<"the elements in partition are:"<<endl;
+        for(auto x : partition) {
+            cerr<<x<<" ";
+        }
+        cout<<endl;
+
+        //Performing the copy function
+        set<Stripe> sLeft, sRight;
+    }
+    return {L,R,partition,stripes};
+}
 
 set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
 
@@ -198,109 +364,50 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
 
     //DEBUGGING
     for(auto x : verticalEdges) {
-        cout<<x.coord<<endl;
+        //cerr<<x.coord<<" "<<x.side.type<<endl;
     }
+
+    //End DEBUGGING
+    
+    Interval x_ext = {-10,10};
+    set<Interval> L,R;
+    set<T> partition;
+    set<Stripe> stripes;
+
+    auto returnValue = computeStripes(verticalEdges, x_ext, L, R, partition, stripes);
+    //cerr<<"This is L:\n";
+    //for(auto l : returnValue.L) {
+    //    cerr<<l.lower<<" "<<l.upper<<endl;
+    //}
+    //cerr<<"This is R:\n";
+    //for(auto r : returnValue.R) {
+    //    cerr<<r.lower<<" "<<r.upper<<endl;
+    //}
+    //cerr<<"This is partition:\n";
+    //for(auto p : returnValue.partition) {
+    //    cerr<<p<<" ";
+    //}
+    //cerr<<endl;
 
     //placeholder
     set<Stripe> temp;
     return temp;
 }
 
-//struct ReturnSet computeStripes (
-//        vector<Edge> verticalEdges,
-//        Interval x_ext,
-//        set<Interval> L,
-//        set<Interval> R,
-//        set<T> partition,
-//        set<Stripe> stripes) {
-//    
-//    if(verticalEdges.size() == 1) {
-//
-//        Stripe S;
-//        Edge v = verticalEdges[0];
-//
-//        stripes.insert({x_ext, {-inf, v.interval.lower}, {}});
-//
-//        if(v.side == "left") {
-//            L.insert(v.interval);
-//            S = {x_ext, v.yInterval, {{v.coord, x_ext.upper}}};
-//        }
-//
-//        else if(v.side == "right") {
-//            R.insert(v.interval);
-//            S = {x_ext, v.yInterval, {{x_ext.lower, v.coord}}};
-//        }
-//
-//        stripes.insert(S);
-//        stripes.insert({x_ext, {v.interval.upper, inf}, {}});
-//
-//        partition = {-inf, v.interval.lower, v.interval.upper, inf};
-//
-//        return {L,R,partition,stripes};
-//    }
-//
-//    else {
-//        T xMedian = verticalEdges.size()/2;
-//
-//        //splitting vertical edges into two equal sized groups
-//        vector<Edge> V1,V2;
-//        for(int i=0;i<verticalEdges.size();i++) {
-//            if(i<=xMedian) V1.push_back(verticalEdges[i]);
-//            else V2.push_back(verticalEdges[i]);
-//        }
-//
-//        //creating empty containers for the subtasks to fill up
-//        set<Interval> L1,L2,R1,R2;
-//        set<T> P1, P2;
-//        set<Stripe> S1,S2;
-//        set<Interval> LR;
-//
-//        //Solving the subtasks
-//        ReturnSet leftSubProblem = computeStripes(V1, {x_ext.bottom, xMedian}, L1, R1, P1, S1);
-//        ReturnSet rightSubProblem = computeStripes(V2, {xMedian,x_ext.top}, L2, R2, P2, S2);
-//
-//        //Using a function to find the intersection of L1 and R2 in O(nlogn) time complexity
-//        LR = intervalIntersection(L1, R2);
-//
-//        //Inserting all the useful edges into L and R. Basically removing all the edges that belong to LR. Time complexity is O(nlogn).
-//        for(auto l1 : L1) {
-//            if(LR.find(l1)==LR.end()) L.insert(l1);
-//        }
-//        for(auto l2 : L2) {
-//            L.insert(l2);
-//        }
-//        for(auto r1 : R1) {
-//            R.insert(r1);
-//        }
-//        for(auto r2 : R2) {
-//            if(LR.find(r2)==LR.end()) R.insert(r2);
-//        }
-//        for(auto p1 : P1) {
-//            partition.insert(p1);
-//        }
-//        for(auto p2 : P2) {
-//            partition.insert(p2);
-//        }
-//
-//        //Performing the copy function
-//        set<Stripe> sLeft, sRight;
-//    }
-//}
-
 int main(int argc, char* argv[]) {
     cout<<"Enter the number of rectangles that you would like to input: ";
-    //cin>>numberOfRectangles;
+    cin>>numberOfRectangles;
 
     cout<<"Enter the co-ordinates of the upper left corner and the lower right corner respectively:"<<endl;
 
-    //set<Rectangle> rect;
+    set<Rectangle> rect;
     for(int i=0;i<numberOfRectangles;i++) {
         int x1,x2,y1,y2;
         cin>>x1>>y1>>x2>>y2;
 
-        //Rectangle<long long> r(x1,x2,y1,y2);
-        //rect.insert(r);
+        Rectangle r(x1,y1,x2,y2);
+        rect.insert(r);
     }
 
-    //RECTANGLE_DAC(rect);
+    RECTANGLE_DAC(rect);
 }
