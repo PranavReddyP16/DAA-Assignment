@@ -29,6 +29,10 @@ class Interval {
         bool operator < (Interval const &Int) const {
             return lower<Int.lower;
         }
+
+        void print() {
+            cout<<"Interval.lower and upper are: "<<lower<<" "<<upper<<endl;
+        }
 };
 
 class LineSegment {
@@ -122,11 +126,33 @@ class Stripe {
         bool operator < (const Stripe s) const {
             return yInterval.lower < s.yInterval.lower;
         }
+
+        void print() {
+            cout<<"x Interval of stripe is: ";
+            xInterval.print();
+
+            cout<<"y Interval of stripe is: ";
+            yInterval.print();
+
+            cout<<"The set of intervals in x_union of the stripe are: "<<endl;
+            for(auto x : xUnion) {
+                x.print();
+            }
+            cout<<endl;
+        }
 };
 
 class Partition {
     public:
         set<T> ySet;
+
+        void print() {
+            cout<<"Partition points are: "<<endl;
+            for(auto x : ySet) {
+                cout<<x<<" ";
+            }
+            cout<<endl;
+        }
 };
 
 struct ReturnSet{
@@ -137,7 +163,7 @@ struct ReturnSet{
         set<Stripe> stripes;
 };
 
-set<Stripe> copy(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
+set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
     set<Stripe> ans;
 
     map<Interval, Stripe> reverseMap;
@@ -161,13 +187,13 @@ set<Stripe> copy(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
         s.yInterval = {unionPartition[i], unionPartition[i+1]};
         s.xInterval = x_int;
 
-        //TODO this might be the cause of an error check this later
-        s.xUnion = reverseMap[{partition[pointer1], partition[pointer1+1]}].xUnion;
-
+        pointer2++;
         while(pointer1+1 < partition.size() && unionPartition[pointer2] > partition[pointer1+1]) {
             pointer1++;
         }
-        pointer2++;
+        
+        //TODO this might be the cause of an error check this later
+        s.xUnion = reverseMap[{partition[pointer1], partition[pointer1+1]}].xUnion;
 
         ans.insert(s);
     }
@@ -213,7 +239,6 @@ struct ReturnSet computeStripes (
     
     //cerr<<"Size of vertical edges is: "<<verticalEdges.size()<<endl;
     if(verticalEdges.size() == 1) {
-
         Stripe S;
         Edge v = verticalEdges[0];
 
@@ -255,55 +280,53 @@ struct ReturnSet computeStripes (
         set<Interval> LR;
 
         //Solving the subtasks
-        cout<<"Before recursion call"<<endl;
         ReturnSet leftSubProblem;
         ReturnSet rightSubProblem;
-        if(V1.size() > 0) leftSubProblem = computeStripes(V1, {x_ext.lower, xMedian}, L1, R1, P1, S1);
-        if(V2.size() > 0) rightSubProblem = computeStripes(V2, {xMedian,x_ext.upper}, L2, R2, P2, S2);
-        cout<<"After recursion call"<<endl;
+        if(V1.size() > 0) leftSubProblem = computeStripes(V1, {x_ext.lower, verticalEdges[xMedian].coord}, L1, R1, P1, S1);
+        if(V2.size() > 0) rightSubProblem = computeStripes(V2, {verticalEdges[xMedian].coord,x_ext.upper}, L2, R2, P2, S2);
 
         //DEBUGGING
         
         
-        cerr<<"This is for the left sub problem\n";
-        cerr<<"This is L:\n";
-        for(auto l : leftSubProblem.L) {
-            cerr<<l.lower<<" "<<l.upper<<endl;
-        }
-        cerr<<"This is R:\n";
-        for(auto r : leftSubProblem.R) {
-            cerr<<r.lower<<" "<<r.upper<<endl;
-        }
-        cerr<<"This is partition:\n";
-        for(auto p : leftSubProblem.partition) {
-            cerr<<p<<" ";
-        }
-        cerr<<endl;
-        
-        cerr<<"This is for the right sub problem\n";
-        cerr<<"This is L:\n";
-        for(auto l : rightSubProblem.L) {
-            cerr<<l.lower<<" "<<l.upper<<endl;
-        }
-        cerr<<"This is R:\n";
-        for(auto r : rightSubProblem.R) {
-            cerr<<r.lower<<" "<<r.upper<<endl;
-        }
-        cerr<<"This is partition:\n";
-        for(auto p : rightSubProblem.partition) {
-            cerr<<p<<" ";
-        }
-        cerr<<endl;
+        //cerr<<"This is for the left sub problem\n";
+        //cerr<<"This is L:\n";
+        //for(auto l : leftSubProblem.L) {
+        //    cerr<<l.lower<<" "<<l.upper<<endl;
+        //}
+        //cerr<<"This is R:\n";
+        //for(auto r : leftSubProblem.R) {
+        //    cerr<<r.lower<<" "<<r.upper<<endl;
+        //}
+        //cerr<<"This is partition:\n";
+        //for(auto p : leftSubProblem.partition) {
+        //    cerr<<p<<" ";
+        //}
+        //cerr<<endl;
+        //
+        //cerr<<"This is for the right sub problem\n";
+        //cerr<<"This is L:\n";
+        //for(auto l : rightSubProblem.L) {
+        //    cerr<<l.lower<<" "<<l.upper<<endl;
+        //}
+        //cerr<<"This is R:\n";
+        //for(auto r : rightSubProblem.R) {
+        //    cerr<<r.lower<<" "<<r.upper<<endl;
+        //}
+        //cerr<<"This is partition:\n";
+        //for(auto p : rightSubProblem.partition) {
+        //    cerr<<p<<" ";
+        //}
+        //cerr<<endl;
 
         //END DEBUGGING
 
         //Using a function to find the intersection of L1 and R2 in O(nlogn) time complexity
         LR = intervalIntersection(leftSubProblem.L, rightSubProblem.R);
 
-        cerr<<"The elements in the set LR are: "<<endl;
-        for(auto x : LR) {
-            cerr<<x.lower<<" "<<x.upper<<endl;
-        }
+        //cerr<<"The elements in the set LR are: "<<endl;
+        //for(auto x : LR) {
+        //    cerr<<x.lower<<" "<<x.upper<<endl;
+        //}
 
         //Inserting all the useful edges into L and R. Basically removing all the edges that belong to LR. Time complexity is O(nlogn).
         for(auto l1 : leftSubProblem.L) {
@@ -326,22 +349,31 @@ struct ReturnSet computeStripes (
         }
 
         //more print statements
-        cerr<<"the elements in L are:"<<endl;
-        for(auto x : L) {
-            cerr<<x.lower<<" "<<x.upper<<endl;
-        }
-        cerr<<"the elements in R are:"<<endl;
-        for(auto x : R) {
-            cerr<<x.lower<<" "<<x.upper<<endl;
-        }
-        cerr<<"the elements in partition are:"<<endl;
-        for(auto x : partition) {
-            cerr<<x<<" ";
-        }
-        cout<<endl;
+        //cerr<<"the elements in L are:"<<endl;
+        //for(auto x : L) {
+        //    cerr<<x.lower<<" "<<x.upper<<endl;
+        //}
+        //cerr<<"the elements in R are:"<<endl;
+        //for(auto x : R) {
+        //    cerr<<x.lower<<" "<<x.upper<<endl;
+        //}
+        //cerr<<"the elements in partition are:"<<endl;
+        //for(auto x : partition) {
+        //    cerr<<x<<" ";
+        //}
+        //cout<<endl;
 
         //Performing the copy function
         set<Stripe> sLeft, sRight;
+
+        sLeft = copyFunction(leftSubProblem.stripes, partition, leftSubProblem.partition, {x_ext.lower, verticalEdges[xMedian].coord});
+        sRight = copyFunction(rightSubProblem.stripes, partition, rightSubProblem.partition, {verticalEdges[xMedian].coord, x_ext.upper});
+
+        //cout<<"xMedian is: "<<verticalEdges[xMedian].coord<<endl;
+        //for(auto x : partition) {
+        //    cout<<x<<" ";
+        //}
+        //cout<<endl;
     }
     return {L,R,partition,stripes};
 }
@@ -369,7 +401,7 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
 
     //End DEBUGGING
     
-    Interval x_ext = {-10,10};
+    Interval x_ext = {-inf,inf};
     set<Interval> L,R;
     set<T> partition;
     set<Stripe> stripes;
