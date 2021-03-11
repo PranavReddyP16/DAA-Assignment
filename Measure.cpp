@@ -163,6 +163,20 @@ struct ReturnSet{
         set<Stripe> stripes;
 };
 
+set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2) {
+    map<Interval, int> cnt;
+    for(auto l1 : L1) {
+        cnt[l1]++;
+    }
+
+    set<Interval> ans;
+    for(auto r2 : R2) {
+        if(cnt[r2] > 0) ans.insert(r2);
+    }
+
+    return ans;
+}
+
 set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
     set<Stripe> ans;
 
@@ -192,10 +206,57 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
             pointer1++;
         }
         
-        //TODO this might be the cause of an error check this later
         s.xUnion = reverseMap[{partition[pointer1], partition[pointer1+1]}].xUnion;
 
         ans.insert(s);
+    }
+
+    return ans;
+}
+
+set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
+    map<Interval, Stripe> reverseMap;
+
+    vector<T> sVector, jVector;
+    vector<Stripe> sTemp;
+
+    for(auto x : S) {
+        sTemp.push_back(x);
+    }
+
+    for(auto x : S) {
+        sVector.push_back(x.yInterval.lower);
+        sVector.push_back(x.yInterval.upper);
+    }
+
+    for(auto x : J) {
+        jVector.push_back(x.lower);
+        jVector.push_back(x.upper);
+    }
+
+    Interval x_ext;
+    if(S.size()>0) x_ext = (*S.begin()).xInterval;
+
+    set<Stripe> ans;
+
+    int p1=0,p2=0;
+    cout<<jVector.size()<<" "<<sVector.size()<<endl;
+    while(p1<jVector.size() && p2<sVector.size()) {
+        if(sVector[p2]>=jVector[p1] && sVector[p2+1]<=jVector[p1+1]) {
+            sTemp[p2/2].xUnion.insert(x_ext);
+            p2+=2;
+        }
+
+        else if(sVector[p2] <= jVector[p1]) {
+            p2+=2;
+        }
+        else if(sVector[p2] >= jVector[p1+1]) {
+            p1+=2;
+        }
+    }
+
+    for(auto x : sTemp) {
+        ans.insert(x);
     }
 
     return ans;
@@ -212,20 +273,6 @@ set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
         s.xInterval = x_int;
         s.yInterval = {partition[i], partition[i+1]};
     }
-}
-
-set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2) {
-    map<Interval, int> cnt;
-    for(auto l1 : L1) {
-        cnt[l1]++;
-    }
-
-    set<Interval> ans;
-    for(auto r2 : R2) {
-        if(cnt[r2] > 0) ans.insert(r2);
-    }
-
-    return ans;
 }
 
 //The important functions go here
@@ -288,45 +335,10 @@ struct ReturnSet computeStripes (
         //DEBUGGING
         
         
-        //cerr<<"This is for the left sub problem\n";
-        //cerr<<"This is L:\n";
-        //for(auto l : leftSubProblem.L) {
-        //    cerr<<l.lower<<" "<<l.upper<<endl;
-        //}
-        //cerr<<"This is R:\n";
-        //for(auto r : leftSubProblem.R) {
-        //    cerr<<r.lower<<" "<<r.upper<<endl;
-        //}
-        //cerr<<"This is partition:\n";
-        //for(auto p : leftSubProblem.partition) {
-        //    cerr<<p<<" ";
-        //}
-        //cerr<<endl;
-        //
-        //cerr<<"This is for the right sub problem\n";
-        //cerr<<"This is L:\n";
-        //for(auto l : rightSubProblem.L) {
-        //    cerr<<l.lower<<" "<<l.upper<<endl;
-        //}
-        //cerr<<"This is R:\n";
-        //for(auto r : rightSubProblem.R) {
-        //    cerr<<r.lower<<" "<<r.upper<<endl;
-        //}
-        //cerr<<"This is partition:\n";
-        //for(auto p : rightSubProblem.partition) {
-        //    cerr<<p<<" ";
-        //}
-        //cerr<<endl;
-
         //END DEBUGGING
 
         //Using a function to find the intersection of L1 and R2 in O(nlogn) time complexity
         LR = intervalIntersection(leftSubProblem.L, rightSubProblem.R);
-
-        //cerr<<"The elements in the set LR are: "<<endl;
-        //for(auto x : LR) {
-        //    cerr<<x.lower<<" "<<x.upper<<endl;
-        //}
 
         //Inserting all the useful edges into L and R. Basically removing all the edges that belong to LR. Time complexity is O(nlogn).
         for(auto l1 : leftSubProblem.L) {
@@ -348,32 +360,32 @@ struct ReturnSet computeStripes (
             partition.insert(p2);
         }
 
-        //more print statements
-        //cerr<<"the elements in L are:"<<endl;
-        //for(auto x : L) {
-        //    cerr<<x.lower<<" "<<x.upper<<endl;
-        //}
-        //cerr<<"the elements in R are:"<<endl;
-        //for(auto x : R) {
-        //    cerr<<x.lower<<" "<<x.upper<<endl;
-        //}
-        //cerr<<"the elements in partition are:"<<endl;
-        //for(auto x : partition) {
-        //    cerr<<x<<" ";
-        //}
-        //cout<<endl;
-
         //Performing the copy function
         set<Stripe> sLeft, sRight;
+        set<Interval> R2minusLR,L1minusLR;
+        for(auto x : rightSubProblem.R) {
+            if(LR.find(x)==LR.end()) {
+                R2minusLR.insert(x);
+            }
+        }
+        for(auto x : leftSubProblem.L) {
+            if(LR.find(x)==LR.end()) {
+                L1minusLR.insert(x);
+            }
+        }
+
+        set<Stripe> blackenedsLeft,blackenedsRight;
 
         sLeft = copyFunction(leftSubProblem.stripes, partition, leftSubProblem.partition, {x_ext.lower, verticalEdges[xMedian].coord});
         sRight = copyFunction(rightSubProblem.stripes, partition, rightSubProblem.partition, {verticalEdges[xMedian].coord, x_ext.upper});
 
-        //cout<<"xMedian is: "<<verticalEdges[xMedian].coord<<endl;
-        //for(auto x : partition) {
-        //    cout<<x<<" ";
-        //}
-        //cout<<endl;
+        blackenedsLeft = blacken(sLeft, R2minusLR);
+        blackenedsRight = blacken(sRight, L1minusLR);
+
+        cout<<"x Median is: "<<verticalEdges[xMedian].coord<<endl;
+        for(auto x : blackenedsRight) {
+            x.print();
+        }
     }
     return {L,R,partition,stripes};
 }
