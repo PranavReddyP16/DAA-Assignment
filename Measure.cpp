@@ -27,7 +27,8 @@ class Interval {
         T upper;
 
         bool operator < (Interval const &Int) const {
-            return lower<Int.lower;
+            if(lower!=Int.lower) return lower<Int.lower;
+            else return upper < Int.upper;
         }
 
         void print() {
@@ -78,7 +79,8 @@ class Rectangle {
         Rectangle() { };
 
         bool operator < (Rectangle const &r) const {
-            return xLeft < r.xLeft;
+            if(xLeft != r.xLeft) return xLeft < r.xLeft;
+            else return xRight < r.xRight;
         }
 };
 
@@ -124,7 +126,8 @@ class Stripe {
         Stripe() {  };
 
         bool operator < (const Stripe s) const {
-            return yInterval.lower < s.yInterval.lower;
+            if(yInterval.lower!=s.yInterval.lower) return yInterval.lower < s.yInterval.lower;
+            else return yInterval.upper < s.yInterval.upper;
         }
 
         void print() {
@@ -206,6 +209,7 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
             pointer1++;
         }
         
+        //TODO
         s.xUnion = reverseMap[{partition[pointer1], partition[pointer1+1]}].xUnion;
 
         ans.insert(s);
@@ -215,8 +219,6 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
 }
 
 set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
-    map<Interval, Stripe> reverseMap;
-
     vector<T> sVector, jVector;
     vector<Stripe> sTemp;
 
@@ -224,15 +226,20 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
         sTemp.push_back(x);
     }
 
+    //cout<<"Printing the set of stripes and partition in the blacken function:"<<endl;
     for(auto x : S) {
         sVector.push_back(x.yInterval.lower);
         sVector.push_back(x.yInterval.upper);
+        //x.yInterval.print();
     }
+    //cout<<endl;
 
     for(auto x : J) {
         jVector.push_back(x.lower);
         jVector.push_back(x.upper);
+        //x.print();
     }
+    //cout<<endl;
 
     Interval x_ext;
     if(S.size()>0) x_ext = (*S.begin()).xInterval;
@@ -240,10 +247,14 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
     set<Stripe> ans;
 
     int p1=0,p2=0;
-    cout<<jVector.size()<<" "<<sVector.size()<<endl;
+    //cout<<jVector.size()<<" "<<sVector.size()<<endl;
     while(p1<jVector.size() && p2<sVector.size()) {
         if(sVector[p2]>=jVector[p1] && sVector[p2+1]<=jVector[p1+1]) {
             sTemp[p2/2].xUnion.insert(x_ext);
+            //cout<<"The x_ext that is supposed to be inserted is: ";
+            //x_ext.print();
+            //cout<<"Printing sTemp[p2/2]:"<<endl;
+            //sTemp[p2/2].print();
             p2+=2;
         }
 
@@ -264,15 +275,54 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
 
 set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
     vector<T> partition;
+    //cout<<"The partition vector for this concat round is:"<<endl;
     for(auto p : P) {
         partition.push_back(p);
+        //cout<<p<<" ";
     }
+    //cout<<endl;
+
+    vector<Stripe> blackenedsLeftVector;
+    vector<Stripe> blackenedsRightVector;
+
+    for(auto x : S1) {
+        blackenedsLeftVector.push_back(x);
+    }
+    for(auto x : S2) {
+        blackenedsRightVector.push_back(x);
+    }
+
+    set<Stripe> ans;
 
     for(int i=0;i<(int)partition.size()-1;i++) {
         Stripe s;
         s.xInterval = x_int;
         s.yInterval = {partition[i], partition[i+1]};
+        for(auto x : blackenedsLeftVector[i].xUnion) {
+            s.xUnion.insert(x);
+        }
+        for(auto x : blackenedsRightVector[i].xUnion) {
+            s.xUnion.insert(x);
+        }
+        
+        ans.insert(s);
     }
+
+    return ans;
+}
+
+T calculateMeasure(set<Stripe> S) {
+    T ans=0;
+    for(auto x : S) {
+        for(auto y : x.xUnion) {
+            T temp = y.upper - y.lower;
+            temp *= (x.yInterval.upper-x.yInterval.lower);
+
+            ans += temp;
+        }
+    }
+
+    return ans;
 }
 
 //The important functions go here
@@ -332,6 +382,11 @@ struct ReturnSet computeStripes (
         if(V1.size() > 0) leftSubProblem = computeStripes(V1, {x_ext.lower, verticalEdges[xMedian].coord}, L1, R1, P1, S1);
         if(V2.size() > 0) rightSubProblem = computeStripes(V2, {verticalEdges[xMedian].coord,x_ext.upper}, L2, R2, P2, S2);
 
+        //cout<<"printing left subproblem for median "<<verticalEdges[xMedian].coord<<": "<<endl;
+        //for(auto x : leftSubProblem.L) {
+        //    x.print();
+        //}
+
         //DEBUGGING
         
         
@@ -361,7 +416,6 @@ struct ReturnSet computeStripes (
         }
 
         //Performing the copy function
-        set<Stripe> sLeft, sRight;
         set<Interval> R2minusLR,L1minusLR;
         for(auto x : rightSubProblem.R) {
             if(LR.find(x)==LR.end()) {
@@ -374,20 +428,36 @@ struct ReturnSet computeStripes (
             }
         }
 
-        set<Stripe> blackenedsLeft,blackenedsRight;
+        set<Stripe> sLeft, sRight;
 
         sLeft = copyFunction(leftSubProblem.stripes, partition, leftSubProblem.partition, {x_ext.lower, verticalEdges[xMedian].coord});
         sRight = copyFunction(rightSubProblem.stripes, partition, rightSubProblem.partition, {verticalEdges[xMedian].coord, x_ext.upper});
 
+        set<Stripe> blackenedsLeft,blackenedsRight;
+
+        //cout<<"x Median is: "<<verticalEdges[xMedian].coord<<endl;
+        //cout<<"sRight is:"<<endl;
+        //for(auto x : sRight) {
+        //    x.print();
+        //}
+
+        //cout<<"The set sLeft consists of: "<<endl;
+        //for(auto x : sLeft) {
+        //    x.print();
+        //}
         blackenedsLeft = blacken(sLeft, R2minusLR);
         blackenedsRight = blacken(sRight, L1minusLR);
+        assert(blackenedsLeft.size() == blackenedsRight.size());
 
-        cout<<"x Median is: "<<verticalEdges[xMedian].coord<<endl;
-        for(auto x : blackenedsRight) {
-            x.print();
-        }
+        //cout<<"blackenedsLeft is:"<<endl;
+        //for(auto x : blackenedsLeft) {
+        //    x.print();
+        //}
+
+        stripes = concat(blackenedsLeft, blackenedsRight, partition, x_ext);
+        //cout<<"size of set of stripes is: "<<stripes.size();
+        return {L,R,partition,stripes};
     }
-    return {L,R,partition,stripes};
 }
 
 set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
@@ -407,9 +477,9 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
             });
 
     //DEBUGGING
-    for(auto x : verticalEdges) {
-        //cerr<<x.coord<<" "<<x.side.type<<endl;
-    }
+    //for(auto x : verticalEdges) {
+    //    cerr<<x.coord<<" "<<x.side.type<<endl;
+    //}
 
     //End DEBUGGING
     
@@ -434,15 +504,15 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
     //cerr<<endl;
 
     //placeholder
-    set<Stripe> temp;
-    return temp;
+
+    return returnValue.stripes;
 }
 
 int main(int argc, char* argv[]) {
-    cout<<"Enter the number of rectangles that you would like to input: ";
+    //cout<<"Enter the number of rectangles that you would like to input: ";
     cin>>numberOfRectangles;
 
-    cout<<"Enter the co-ordinates of the upper left corner and the lower right corner respectively:"<<endl;
+    //cout<<"Enter the co-ordinates of the upper left corner and the lower right corner respectively:"<<endl;
 
     set<Rectangle> rect;
     for(int i=0;i<numberOfRectangles;i++) {
@@ -453,5 +523,10 @@ int main(int argc, char* argv[]) {
         rect.insert(r);
     }
 
-    RECTANGLE_DAC(rect);
+    set<Stripe> ans = RECTANGLE_DAC(rect);
+    cout<<"size of final set of stripes is: "<<ans.size()<<endl;
+    for(auto x : ans) {
+        x.print();
+    }
+    cout<<"The measure of ths stripes is: "<<calculateMeasure(ans)<<endl;
 }
