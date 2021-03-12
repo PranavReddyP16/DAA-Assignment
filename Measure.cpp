@@ -166,6 +166,26 @@ struct ReturnSet{
         set<Stripe> stripes;
 };
 
+set<Interval> insertWithoutOverlap(set<Interval> S, Interval Int) {
+    vector<Interval> sVector;
+    for(auto x : S) {
+        sVector.push_back(x);
+    }
+
+    for(auto x : sVector) {
+        if(Int.lower>=x.lower && Int.upper >= x.upper) {
+            Int.lower = x.upper;
+        } 
+        else if(Int.lower<=x.lower && Int.upper<=x.upper) {
+            Int.upper = x.lower;
+        }
+    }
+
+    S.insert(Int);
+
+    return S;
+}
+
 set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2) {
     map<Interval, int> cnt;
     for(auto l1 : L1) {
@@ -250,11 +270,8 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
     //cout<<jVector.size()<<" "<<sVector.size()<<endl;
     while(p1<jVector.size() && p2<sVector.size()) {
         if(sVector[p2]>=jVector[p1] && sVector[p2+1]<=jVector[p1+1]) {
-            sTemp[p2/2].xUnion.insert(x_ext);
-            //cout<<"The x_ext that is supposed to be inserted is: ";
-            //x_ext.print();
-            //cout<<"Printing sTemp[p2/2]:"<<endl;
-            //sTemp[p2/2].print();
+            sTemp[p2/2].xUnion = insertWithoutOverlap(sTemp[p2/2].xUnion, x_ext);
+            //sTemp[p2/2].xUnion.insert(x_ext);
             p2+=2;
         }
 
@@ -299,10 +316,12 @@ set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
         s.xInterval = x_int;
         s.yInterval = {partition[i], partition[i+1]};
         for(auto x : blackenedsLeftVector[i].xUnion) {
-            s.xUnion.insert(x);
+            s.xUnion = insertWithoutOverlap(s.xUnion, x);
+            //s.xUnion.insert(x);
         }
         for(auto x : blackenedsRightVector[i].xUnion) {
-            s.xUnion.insert(x);
+            s.xUnion = insertWithoutOverlap(s.xUnion, x);
+            //s.xUnion.insert(x);
         }
         
         ans.insert(s);
