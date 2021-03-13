@@ -3,7 +3,9 @@
 using namespace std;
 #define T long long
 
-const T inf = 1e18;
+const T inf = 1e10+5;
+
+//*******************************TODO make sure the necessary functions assign and doesn't add**************************************************
 
 //All global variables to be declared here
 /*!
@@ -166,28 +168,8 @@ struct ReturnSet{
         set<Stripe> stripes;
 };
 
-set<Interval> insertWithoutOverlap(set<Interval> S, Interval Int) {
-    vector<Interval> sVector;
-    for(auto x : S) {
-        sVector.push_back(x);
-    }
-
-    for(auto x : sVector) {
-        if(Int.lower>=x.lower && Int.upper >= x.upper) {
-            Int.lower = x.upper;
-        } 
-        else if(Int.lower<=x.lower && Int.upper<=x.upper) {
-            Int.upper = x.lower;
-        }
-    }
-
-    S.insert(Int);
-
-    return S;
-}
-
 set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2) {
-    map<Interval, int> cnt;
+    map<Interval, T> cnt;
     for(auto l1 : L1) {
         cnt[l1]++;
     }
@@ -218,8 +200,8 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
     }
 
 
-    int pointer1=0,pointer2=0;
-    for(int i=0;i<(int)unionPartition.size()-1;i++) {
+    T pointer1=0,pointer2=0;
+    for(T i=0;i<(T)unionPartition.size()-1;i++) {
         Stripe s;
         s.yInterval = {unionPartition[i], unionPartition[i+1]};
         s.xInterval = x_int;
@@ -266,12 +248,12 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
 
     set<Stripe> ans;
 
-    int p1=0,p2=0;
+    T p1=0,p2=0;
     //cout<<jVector.size()<<" "<<sVector.size()<<endl;
     while(p1<jVector.size() && p2<sVector.size()) {
         if(sVector[p2]>=jVector[p1] && sVector[p2+1]<=jVector[p1+1]) {
-            sTemp[p2/2].xUnion = insertWithoutOverlap(sTemp[p2/2].xUnion, x_ext);
-            //sTemp[p2/2].xUnion.insert(x_ext);
+            sTemp[p2/2].xUnion.clear();
+            sTemp[p2/2].xUnion.insert(x_ext);
             p2+=2;
         }
 
@@ -311,17 +293,15 @@ set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
 
     set<Stripe> ans;
 
-    for(int i=0;i<(int)partition.size()-1;i++) {
+    for(T i=0;i<(T)partition.size()-1;i++) {
         Stripe s;
         s.xInterval = x_int;
         s.yInterval = {partition[i], partition[i+1]};
         for(auto x : blackenedsLeftVector[i].xUnion) {
-            s.xUnion = insertWithoutOverlap(s.xUnion, x);
-            //s.xUnion.insert(x);
+            s.xUnion.insert(x);
         }
         for(auto x : blackenedsRightVector[i].xUnion) {
-            s.xUnion = insertWithoutOverlap(s.xUnion, x);
-            //s.xUnion.insert(x);
+            s.xUnion.insert(x);
         }
         
         ans.insert(s);
@@ -384,7 +364,7 @@ struct ReturnSet computeStripes (
 
         //splitting vertical edges into two equal sized groups
         vector<Edge> V1,V2;
-        for(int i=0;i<verticalEdges.size();i++) {
+        for(T i=0;i<verticalEdges.size();i++) {
             if(i<xMedian) V1.push_back(verticalEdges[i]);
             else V2.push_back(verticalEdges[i]);
         }
@@ -534,9 +514,9 @@ int main(int argc, char* argv[]) {
     //cout<<"Enter the co-ordinates of the upper left corner and the lower right corner respectively:"<<endl;
 
     set<Rectangle> rect;
-    for(int i=0;i<numberOfRectangles;i++) {
-        int x1,x2,y1,y2;
-        cin>>x1>>y1>>x2>>y2;
+    for(T i=0;i<numberOfRectangles;i++) {
+        T x1,x2,y1,y2;
+        cin>>x1>>x2>>y1>>y2;
 
         Rectangle r(x1,y1,x2,y2);
         rect.insert(r);
