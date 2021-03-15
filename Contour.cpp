@@ -3,9 +3,7 @@
 using namespace std;
 #define T long long
 
-const T inf = 1e10+5;
-
-//*******************************TODO make sure the necessary functions assign and doesn't add**************************************************
+const T inf = 1e6+5;
 
 //All global variables to be declared here
 /*!
@@ -13,6 +11,7 @@ const T inf = 1e10+5;
  */
 long long numberOfRectangles;         ///<The number of rectangles as given by the user
 set<string> edgeType { "left", "right", "bottom", "top" };    ///<set of all possible edgetypes
+set<string> lru { "left", "right", "undefined" };
 
 //All utility functions that the classes use to be declared here
 
@@ -21,6 +20,13 @@ class Point {
     public:
         T x_coord;
         T y_coord;
+};
+
+struct ctree{
+    T x;
+    string side;
+    ctree* left_child;
+    ctree* right_child;
 };
 
 class Interval {
@@ -118,11 +124,13 @@ class Stripe {
         Interval xInterval;
         Interval yInterval;
         set<Interval> xUnion;
+        ctree* tree;
 
-        Stripe(Interval xInt, Interval yInt, set<Interval> xUn) {
+        Stripe(Interval xInt, Interval yInt, set<Interval> xUn, ctree* t) {
             xInterval = xInt;
             yInterval = yInt;
             xUnion = xUn;
+            tree = t;
         }
 
         Stripe() {  };
@@ -207,12 +215,12 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
         s.xInterval = x_int;
 
         pointer2++;
-        while(pointer1+1 < partition.size() && unionPartition[pointer2] > partition[pointer1+1]) {
+        while(pointer1+1 < (T)partition.size() && unionPartition[pointer2] > partition[pointer1+1]) {
             pointer1++;
         }
         
-        //TODO
-        s.xUnion = reverseMap[{partition[pointer1], partition[pointer1+1]}].xUnion;
+        s.xUnion = reverseMap[{partition[pointer1], partition[pointer1+1]}].xUnion;                     //(D)
+        s.tree = reverseMap[{partition[pointer1], partition[pointer1+1]}].tree;
 
         ans.insert(s);
     }
@@ -228,32 +236,28 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
         sTemp.push_back(x);
     }
 
-    //cout<<"Printing the set of stripes and partition in the blacken function:"<<endl;
     for(auto x : S) {
         sVector.push_back(x.yInterval.lower);
         sVector.push_back(x.yInterval.upper);
-        //x.yInterval.print();
     }
-    //cout<<endl;
 
     for(auto x : J) {
         jVector.push_back(x.lower);
         jVector.push_back(x.upper);
-        //x.print();
     }
-    //cout<<endl;
 
     Interval x_ext;
-    if(S.size()>0) x_ext = (*S.begin()).xInterval;
+    if((T)S.size()>0) x_ext = (*S.begin()).xInterval;
 
     set<Stripe> ans;
 
     T p1=0,p2=0;
-    //cout<<jVector.size()<<" "<<sVector.size()<<endl;
-    while(p1<jVector.size() && p2<sVector.size()) {
+    while(p1<(T)jVector.size() && p2<(T)sVector.size()) {
         if(sVector[p2]>=jVector[p1] && sVector[p2+1]<=jVector[p1+1]) {
             sTemp[p2/2].xUnion.clear();
             sTemp[p2/2].xUnion.insert(x_ext);
+
+            sTemp[p2/2].tree = NULL;                                            //(E)
             p2+=2;
         }
 
@@ -274,12 +278,9 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
 
 set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
     vector<T> partition;
-    //cout<<"The partition vector for this concat round is:"<<endl;
     for(auto p : P) {
         partition.push_back(p);
-        //cout<<p<<" ";
     }
-    //cout<<endl;
 
     vector<Stripe> blackenedsLeftVector;
     vector<Stripe> blackenedsRightVector;
@@ -303,6 +304,14 @@ set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
         for(auto x : blackenedsRightVector[i].xUnion) {
             s.xUnion.insert(x);
         }
+
+        ctree* tree{};
+        tree->x = x_int.upper;
+        tree->side = "undefined";
+        tree->left_child = blackenedsLeftVector[i].tree;
+        tree->right_child = blackenedsRightVector[i].tree;
+
+        s.tree = tree;                                                  //(F)
         
         ans.insert(s);
     }
@@ -333,26 +342,37 @@ struct ReturnSet computeStripes (
         set<T> partition,
         set<Stripe> stripes) {
     
-    //cerr<<"Size of vertical edges is: "<<verticalEdges.size()<<endl;
-    if(verticalEdges.size() == 1) {
+    if((T)verticalEdges.size() == 1) {
         Stripe S;
         Edge v = verticalEdges[0];
 
-        stripes.insert({x_ext, {-inf, v.interval.lower}, {}});
+        stripes.insert({x_ext, {-inf, v.interval.lower}, {}, NULL});                            //(A)
 
         //cerr<<"the edgetype is: "<<v.side.type<<endl;
         if(v.side.type == "left") {
             L.insert(v.interval);
-            S = {x_ext, v.interval, {{v.coord, x_ext.upper}}};
+            ctree* tree{};
+            
+            tree->x = v.coord;
+            tree->side = "left";
+            tree->left_child = NULL;
+            tree->right_child = NULL;
+            S = {x_ext, v.interval, {{v.coord, x_ext.upper}}, tree};                            //(B)
         }
 
         else if(v.side.type == "right") {
             R.insert(v.interval);
-            S = {x_ext, v.interval, {{x_ext.lower, v.coord}}};
+            ctree* tree{};
+            
+            tree->x = v.coord;
+            tree->side = "right";
+            tree->left_child = NULL;
+            tree->right_child = NULL;
+            S = {x_ext, v.interval, {{x_ext.lower, v.coord}}, tree};                            //(C)
         }
 
         stripes.insert(S);
-        stripes.insert({x_ext, {v.interval.upper, inf}, {}});
+        stripes.insert({x_ext, {v.interval.upper, inf}, {}, NULL});
 
         partition = {-inf, v.interval.lower, v.interval.upper, inf};
 
@@ -364,7 +384,7 @@ struct ReturnSet computeStripes (
 
         //splitting vertical edges into two equal sized groups
         vector<Edge> V1,V2;
-        for(T i=0;i<verticalEdges.size();i++) {
+        for(T i=0;i<(T)verticalEdges.size();i++) {
             if(i<xMedian) V1.push_back(verticalEdges[i]);
             else V2.push_back(verticalEdges[i]);
         }
@@ -380,7 +400,6 @@ struct ReturnSet computeStripes (
         ReturnSet rightSubProblem;
         if(V1.size() > 0) leftSubProblem = computeStripes(V1, {x_ext.lower, verticalEdges[xMedian].coord}, L1, R1, P1, S1);
         if(V2.size() > 0) rightSubProblem = computeStripes(V2, {verticalEdges[xMedian].coord,x_ext.upper}, L2, R2, P2, S2);
-
 
         //Using a function to find the intersection of L1 and R2 in O(nlogn) time complexity
         LR = intervalIntersection(leftSubProblem.L, rightSubProblem.R);
@@ -429,7 +448,6 @@ struct ReturnSet computeStripes (
         blackenedsRight = blacken(sRight, L1minusLR);
         assert(blackenedsLeft.size() == blackenedsRight.size());
 
-
         stripes = concat(blackenedsLeft, blackenedsRight, partition, x_ext);
         return {L,R,partition,stripes};
     }
@@ -451,7 +469,6 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
                 return e1.coord < e2.coord;
             });
 
-    
     Interval x_ext = {-inf,inf};
     set<Interval> L,R;
     set<T> partition;
@@ -460,6 +477,101 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
     auto returnValue = computeStripes(verticalEdges, x_ext, L, R, partition, stripes);
 
     return returnValue.stripes;
+}
+
+void dfs(ctree* u, vector<ctree*> &leaves) {
+    if(u->left_child==NULL && u->right_child==NULL) {
+        leaves.push_back(u);
+        return;
+    }
+
+    if(u->left_child!=NULL) {
+        dfs(u->left_child, leaves);
+    }
+    if(u->right_child!=NULL) {
+        dfs(u->right_child, leaves);
+    }
+}
+
+set<Interval> freeQuery(Interval h, Stripe s) {
+    set<Interval> ans;
+    vector<ctree*> leaves;
+
+    dfs(s.tree, leaves);
+
+    for(int i=0;i<(T)leaves.size()-1;i++) {
+        if(i>0 && h.lower<leaves[i]->x && h.lower>=leaves[i-1]->x) {
+            if(leaves[i]->side=="left") {
+                ans.insert({h.lower, leaves[i]->x});
+            }
+        }
+
+        else if(h.upper>leaves[i]->x && h.upper<=leaves[i+1]->x) {
+            if(leaves[i]->side == "right") {
+                ans.insert({leaves[i]->x, h.upper});
+            }
+        }
+
+        else if(leaves[i]->x >= h.lower && leaves[i+1]->x <= h.upper) {
+            if(leaves[i]->side=="right" && leaves[i+1]->side=="left") {
+                ans.insert({leaves[i]->x, leaves[i+1]->x});
+            }
+        }
+    }
+
+    return ans;
+}
+
+set<LineSegment> contourPieces(Edge h, set<Stripe> S) {
+    set<LineSegment> ans;
+
+    Stripe s;
+    if(h.side.type=="bottom") {
+        for(auto x : S) {
+            if(x.yInterval.upper == h.coord) {
+                s = x;
+                break;
+            }
+        }
+    }
+    else if(h.side.type=="top") {
+        for(auto x : S) {
+            if(x.yInterval.lower == h.coord) {
+                s=x;
+                break;
+            }
+        }
+    }
+
+    set<Interval> J = freeQuery(h.interval, s);
+
+    for(auto x : J) {
+        ans.insert({x, h.coord});
+    }
+
+    return ans;
+}
+
+set<LineSegment> contour(set<Rectangle> rect, set<Stripe> S) {
+
+    set<LineSegment> ans;
+
+    for(auto r : rect) {
+        Edge eTop(r.yRight, r.xInterval, "top");
+        Edge eBottom(r.yLeft, r.xInterval, "bottom");
+
+        set<LineSegment> pieces1 = contourPieces(eTop, S);
+        set<LineSegment> pieces2 = contourPieces(eBottom, S);
+
+        for(auto x : pieces1) {
+            ans.insert(x);
+        }
+        for(auto x : pieces2) {
+            ans.insert(x);
+        }
+    }
+
+    return ans;
 }
 
 int main(int argc, char* argv[]) {
@@ -483,4 +595,6 @@ int main(int argc, char* argv[]) {
     //    x.print();
     //}
     cout<<"The measure of ths stripes is: "<<calculateMeasure(ans)<<endl;
+
+    set<LineSegment> finalContour = contour(rect, ans);
 }
