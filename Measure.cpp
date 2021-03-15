@@ -524,8 +524,8 @@ int main(int argc, char* argv[]) {
 
     set<Stripe> ans = RECTANGLE_DAC(rect);
     cout<<"size of final set of stripes is: "<<ans.size()<<endl;
-    for(auto x : ans) {
-        x.print();
-    }
+    //for(auto x : ans) {
+    //    x.print();
+    //}
     cout<<"The measure of ths stripes is: "<<calculateMeasure(ans)<<endl;
 }
