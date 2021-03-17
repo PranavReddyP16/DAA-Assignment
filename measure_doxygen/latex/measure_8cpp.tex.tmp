@@ -1,0 +1,572 @@
+\hypertarget{measure_8cpp}{}\section{measure.\+cpp File Reference}
+\label{measure_8cpp}\index{measure.\+cpp@{measure.\+cpp}}
+{\ttfamily \#include $<$bits/stdc++.\+h$>$}\newline
+{\ttfamily \#include $<$regex$>$}\newline
+Include dependency graph for measure.\+cpp\+:
+% FIG 0
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classPoint}{Point}
+\item 
+class \hyperlink{classInterval}{Interval}
+\item 
+class \hyperlink{classLineSegment}{Line\+Segment}
+\item 
+class \hyperlink{classRectangle}{Rectangle}
+\item 
+class \hyperlink{classEdgeType}{Edge\+Type}
+\item 
+class \hyperlink{classEdge}{Edge}
+\item 
+class \hyperlink{classStripe}{Stripe}
+\item 
+class \hyperlink{classPartition}{Partition}
+\item 
+struct \hyperlink{structReturnSet}{Return\+Set}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{measure_8cpp_a0acb682b8260ab1c60b918599864e2e5}\label{measure_8cpp_a0acb682b8260ab1c60b918599864e2e5}} 
+\#define {\bfseries T}~long long
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+set$<$ \hyperlink{classInterval}{Interval} $>$ \hyperlink{measure_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}{interval\+Intersection} (set$<$ \hyperlink{classInterval}{Interval} $>$ L1, set$<$ \hyperlink{classInterval}{Interval} $>$ R2)
+\item 
+set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{measure_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}{copy\+Function} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S, set$<$ T $>$ P, set$<$ T $>$ P1, \hyperlink{classInterval}{Interval} x\+\_\+int)
+\item 
+set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{measure_8cpp_a7081468a9dbabf996cd604feaa4c537a}{blacken} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S, set$<$ \hyperlink{classInterval}{Interval} $>$ J)
+\item 
+set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{measure_8cpp_aab15ea286786048f44dff97f975a4db8}{concat} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S1, set$<$ \hyperlink{classStripe}{Stripe} $>$ S2, set$<$ T $>$ P, \hyperlink{classInterval}{Interval} x\+\_\+int)
+\item 
+T \hyperlink{measure_8cpp_a350212d4e224cd81a4c689df94eb395d}{calculate\+Measure} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S)
+\item 
+struct \hyperlink{structReturnSet}{Return\+Set} \hyperlink{measure_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}{compute\+Stripes} (vector$<$ \hyperlink{classEdge}{Edge} $>$ vertical\+Edges, \hyperlink{classInterval}{Interval} x\+\_\+ext, set$<$ \hyperlink{classInterval}{Interval} $>$ L, set$<$ \hyperlink{classInterval}{Interval} $>$ R, set$<$ T $>$ partition, set$<$ \hyperlink{classStripe}{Stripe} $>$ stripes)
+\item 
+set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{measure_8cpp_a32faf605cbf6e5494e309228bdf48833}{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC} (set$<$ \hyperlink{classRectangle}{Rectangle} $>$ rect)
+\item 
+int \hyperlink{measure_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{measure_8cpp_afcbf24b8935fa352fd707595cdc3782b}\label{measure_8cpp_afcbf24b8935fa352fd707595cdc3782b}} 
+const T {\bfseries inf} = 1e10 + 5
+\item 
+\mbox{\Hypertarget{measure_8cpp_a3a47f01b0a195cf72c123d48bf44ad27}\label{measure_8cpp_a3a47f01b0a195cf72c123d48bf44ad27}} 
+long long {\bfseries number\+Of\+Rectangles}
+\item 
+\mbox{\Hypertarget{measure_8cpp_a677525400a439b4716d08d478a97048b}\label{measure_8cpp_a677525400a439b4716d08d478a97048b}} 
+set$<$ string $>$ {\bfseries edge\+Type} \{\char`\"{}left\char`\"{}, \char`\"{}right\char`\"{}, \char`\"{}bottom\char`\"{}, \char`\"{}top\char`\"{}\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{measure_8cpp_a7081468a9dbabf996cd604feaa4c537a}\label{measure_8cpp_a7081468a9dbabf996cd604feaa4c537a}} 
+\index{measure.\+cpp@{measure.\+cpp}!blacken@{blacken}}
+\index{blacken@{blacken}!measure.\+cpp@{measure.\+cpp}}
+\subsubsection{\texorpdfstring{blacken()}{blacken()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ blacken (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{J }\end{DoxyParamCaption})}
+
+Implements the blacken function as described in the algorithm 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em S,J} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 294 of file measure.\+cpp.
+
+
+\begin{DoxyCode}
+295 \{
+296     vector<T> sVector, jVector;
+297     vector<Stripe> sTemp;
+298 
+299     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : S)
+300     \{
+301         sTemp.push\_back(x);
+302     \}
+303 
+304     \textcolor{comment}{//cout<<"Printing the set of stripes and partition in the blacken function:"<<endl;}
+305     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : S)
+306     \{
+307         sVector.push\_back(x.yInterval.lower);
+308         sVector.push\_back(x.yInterval.upper);
+309         \textcolor{comment}{//x.yInterval.print();}
+310     \}
+311     \textcolor{comment}{//cout<<endl;}
+312 
+313     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : J)
+314     \{
+315         jVector.push\_back(x.lower);
+316         jVector.push\_back(x.upper);
+317         \textcolor{comment}{//x.print();}
+318     \}
+319     \textcolor{comment}{//cout<<endl;}
+320 
+321     \hyperlink{classInterval}{Interval} x\_ext;
+322     \textcolor{keywordflow}{if} (S.size() > 0)
+323         x\_ext = (*S.begin()).xInterval;
+324 
+325     set<Stripe> ans;
+326 
+327     T p1 = 0, p2 = 0;
+328     \textcolor{comment}{//cout<<jVector.size()<<" "<<sVector.size()<<endl;}
+329     \textcolor{keywordflow}{while} (p1 < jVector.size() && p2 < sVector.size())
+330     \{
+331         \textcolor{keywordflow}{if} (sVector[p2] >= jVector[p1] && sVector[p2 + 1] <= jVector[p1 + 1])
+332         \{
+333             sTemp[p2 / 2].xUnion.clear();
+334             sTemp[p2 / 2].xUnion.insert(x\_ext);
+335             p2 += 2;
+336         \}
+337 
+338         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (sVector[p2] <= jVector[p1])
+339         \{
+340             p2 += 2;
+341         \}
+342         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (sVector[p2] >= jVector[p1 + 1])
+343         \{
+344             p1 += 2;
+345         \}
+346     \}
+347 
+348     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : sTemp)
+349     \{
+350         ans.insert(x);
+351     \}
+352 
+353     \textcolor{keywordflow}{return} ans;
+354 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{measure_8cpp_a350212d4e224cd81a4c689df94eb395d}\label{measure_8cpp_a350212d4e224cd81a4c689df94eb395d}} 
+\index{measure.\+cpp@{measure.\+cpp}!calculate\+Measure@{calculate\+Measure}}
+\index{calculate\+Measure@{calculate\+Measure}!measure.\+cpp@{measure.\+cpp}}
+\subsubsection{\texorpdfstring{calculate\+Measure()}{calculateMeasure()}}
+{\footnotesize\ttfamily T calculate\+Measure (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S }\end{DoxyParamCaption})}
+
+Computes the final area of the rectangles 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em S} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 411 of file measure.\+cpp.
+
+
+\begin{DoxyCode}
+412 \{
+413     T ans = 0;
+414     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : S)
+415     \{
+416         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} y : x.xUnion)
+417         \{
+418             T temp = y.upper - y.lower;
+419             temp *= (x.yInterval.upper - x.yInterval.lower);
+420 
+421             ans += temp;
+422         \}
+423     \}
+424 
+425     \textcolor{keywordflow}{return} ans;
+426 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{measure_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}\label{measure_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}} 
+\index{measure.\+cpp@{measure.\+cpp}!compute\+Stripes@{compute\+Stripes}}
+\index{compute\+Stripes@{compute\+Stripes}!measure.\+cpp@{measure.\+cpp}}
+\subsubsection{\texorpdfstring{compute\+Stripes()}{computeStripes()}}
+{\footnotesize\ttfamily struct \hyperlink{structReturnSet}{Return\+Set} compute\+Stripes (\begin{DoxyParamCaption}\item[{vector$<$ \hyperlink{classEdge}{Edge} $>$}]{vertical\+Edges,  }\item[{\hyperlink{classInterval}{Interval}}]{x\+\_\+ext,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{L,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{R,  }\item[{set$<$ T $>$}]{partition,  }\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{stripes }\end{DoxyParamCaption})}
+
+S\+T\+R\+I\+P\+ES function according to the algorithm 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em vertical\+Edges,x\+\_\+ext,L,R,partition,stripes} & \\
+\hline
+\mbox{\tt out}  & {\em \hyperlink{structReturnSet}{Return\+Set}} & object \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 433 of file measure.\+cpp.
+
+
+\begin{DoxyCode}
+440 \{
+441 
+442     \textcolor{comment}{//cerr<<"Size of vertical edges is: "<<verticalEdges.size()<<endl;}
+443     \textcolor{keywordflow}{if} (verticalEdges.size() == 1)
+444     \{
+445         \hyperlink{classStripe}{Stripe} S;
+446         \hyperlink{classEdge}{Edge} v = verticalEdges[0];
+447 
+448         stripes.insert(\{x\_ext, \{-inf, v.interval.lower\}, \{\}\});
+449 
+450         \textcolor{comment}{//cerr<<"the edgetype is: "<<v.side.type<<endl;}
+451         \textcolor{keywordflow}{if} (v.side.type == \textcolor{stringliteral}{"left"})
+452         \{
+453             L.insert(v.interval);
+454             S = \{x\_ext, v.interval, \{\{v.coord, x\_ext.upper\}\}\};
+455         \}
+456 
+457         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (v.side.type == \textcolor{stringliteral}{"right"})
+458         \{
+459             R.insert(v.interval);
+460             S = \{x\_ext, v.interval, \{\{x\_ext.lower, v.coord\}\}\};
+461         \}
+462 
+463         stripes.insert(S);
+464         stripes.insert(\{x\_ext, \{v.interval.upper, inf\}, \{\}\});
+465 
+466         partition = \{-inf, v.interval.lower, v.interval.upper, inf\};
+467 
+468         \textcolor{keywordflow}{return} \{L, R, partition, stripes\};
+469     \}
+470 
+471     \textcolor{keywordflow}{else}
+472     \{
+473         T xMedian = verticalEdges.size() / 2;
+474 
+475         \textcolor{comment}{//splitting vertical edges into two equal sized groups}
+476         vector<Edge> V1, V2;
+477         \textcolor{keywordflow}{for} (T i = 0; i < verticalEdges.size(); i++)
+478         \{
+479             \textcolor{keywordflow}{if} (i < xMedian)
+480                 V1.push\_back(verticalEdges[i]);
+481             \textcolor{keywordflow}{else}
+482                 V2.push\_back(verticalEdges[i]);
+483         \}
+484 
+485         \textcolor{comment}{//creating empty containers for the subtasks to fill up}
+486         set<Interval> L1, L2, R1, R2;
+487         set<T> P1, P2;
+488         set<Stripe> S1, S2;
+489         set<Interval> LR;
+490 
+491         \textcolor{comment}{//Solving the subtasks}
+492         \hyperlink{structReturnSet}{ReturnSet} leftSubProblem;
+493         \hyperlink{structReturnSet}{ReturnSet} rightSubProblem;
+494         \textcolor{keywordflow}{if} (V1.size() > 0)
+495             leftSubProblem = \hyperlink{measure_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}{computeStripes}(V1, \{x\_ext.lower, verticalEdges[xMedian].coord\}, 
+      L1, R1, P1, S1);
+496         \textcolor{keywordflow}{if} (V2.size() > 0)
+497             rightSubProblem = \hyperlink{measure_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}{computeStripes}(V2, \{verticalEdges[xMedian].coord, x\_ext.upper\},
+       L2, R2, P2, S2);
+498 
+499         \textcolor{comment}{//Using a function to find the intersection of L1 and R2 in O(nlogn) time complexity}
+500         LR = \hyperlink{measure_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}{intervalIntersection}(leftSubProblem.L, rightSubProblem.R);
+501 
+502         \textcolor{comment}{//Inserting all the useful edges into L and R. Basically removing all the edges that belong to LR.
+       Time complexity is O(nlogn).}
+503         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} l1 : leftSubProblem.L)
+504         \{
+505             \textcolor{keywordflow}{if} (LR.find(l1) == LR.end())
+506                 L.insert(l1);
+507         \}
+508         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} l2 : rightSubProblem.L)
+509         \{
+510             L.insert(l2);
+511         \}
+512         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} r1 : leftSubProblem.R)
+513         \{
+514             R.insert(r1);
+515         \}
+516         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} r2 : rightSubProblem.R)
+517         \{
+518             \textcolor{keywordflow}{if} (LR.find(r2) == LR.end())
+519                 R.insert(r2);
+520         \}
+521         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} p1 : leftSubProblem.partition)
+522         \{
+523             partition.insert(p1);
+524         \}
+525         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} p2 : rightSubProblem.partition)
+526         \{
+527             partition.insert(p2);
+528         \}
+529 
+530         \textcolor{comment}{//Performing the copy function}
+531         set<Interval> R2minusLR, L1minusLR;
+532         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : rightSubProblem.R)
+533         \{
+534             \textcolor{keywordflow}{if} (LR.find(x) == LR.end())
+535             \{
+536                 R2minusLR.insert(x);
+537             \}
+538         \}
+539         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : leftSubProblem.L)
+540         \{
+541             \textcolor{keywordflow}{if} (LR.find(x) == LR.end())
+542             \{
+543                 L1minusLR.insert(x);
+544             \}
+545         \}
+546 
+547         set<Stripe> sLeft, sRight;
+548 
+549         sLeft = \hyperlink{measure_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}{copyFunction}(leftSubProblem.stripes, partition, leftSubProblem.partition, \{x\_ex
+      t.lower, verticalEdges[xMedian].coord\});
+550         sRight = \hyperlink{measure_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}{copyFunction}(rightSubProblem.stripes, partition, rightSubProblem.partition, \{v
+      erticalEdges[xMedian].coord, x\_ext.upper\});
+551 
+552         set<Stripe> blackenedsLeft, blackenedsRight;
+553 
+554         blackenedsLeft = \hyperlink{measure_8cpp_a7081468a9dbabf996cd604feaa4c537a}{blacken}(sLeft, R2minusLR);
+555         blackenedsRight = \hyperlink{measure_8cpp_a7081468a9dbabf996cd604feaa4c537a}{blacken}(sRight, L1minusLR);
+556         assert(blackenedsLeft.size() == blackenedsRight.size());
+557 
+558         stripes = \hyperlink{measure_8cpp_aab15ea286786048f44dff97f975a4db8}{concat}(blackenedsLeft, blackenedsRight, partition, x\_ext);
+559         \textcolor{keywordflow}{return} \{L, R, partition, stripes\};
+560     \}
+561 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{measure_8cpp_aab15ea286786048f44dff97f975a4db8}\label{measure_8cpp_aab15ea286786048f44dff97f975a4db8}} 
+\index{measure.\+cpp@{measure.\+cpp}!concat@{concat}}
+\index{concat@{concat}!measure.\+cpp@{measure.\+cpp}}
+\subsubsection{\texorpdfstring{concat()}{concat()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ concat (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S1,  }\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S2,  }\item[{set$<$ T $>$}]{P,  }\item[{\hyperlink{classInterval}{Interval}}]{x\+\_\+int }\end{DoxyParamCaption})}
+
+Implements the concat function as described in the algorithm 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em S1,S2,P,x\+\_\+int} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 361 of file measure.\+cpp.
+
+
+\begin{DoxyCode}
+362 \{
+363     vector<T> partition;
+364     \textcolor{comment}{//cout<<"The partition vector for this concat round is:"<<endl;}
+365     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} p : P)
+366     \{
+367         partition.push\_back(p);
+368         \textcolor{comment}{//cout<<p<<" ";}
+369     \}
+370     \textcolor{comment}{//cout<<endl;}
+371 
+372     vector<Stripe> blackenedsLeftVector;
+373     vector<Stripe> blackenedsRightVector;
+374 
+375     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : S1)
+376     \{
+377         blackenedsLeftVector.push\_back(x);
+378     \}
+379     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : S2)
+380     \{
+381         blackenedsRightVector.push\_back(x);
+382     \}
+383 
+384     set<Stripe> ans;
+385 
+386     \textcolor{keywordflow}{for} (T i = 0; i < (T)partition.size() - 1; i++)
+387     \{
+388         \hyperlink{classStripe}{Stripe} s;
+389         s.xInterval = x\_int;
+390         s.yInterval = \{partition[i], partition[i + 1]\};
+391         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : blackenedsLeftVector[i].xUnion)
+392         \{
+393             s.xUnion.insert(x);
+394         \}
+395         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} x : blackenedsRightVector[i].xUnion)
+396         \{
+397             s.xUnion.insert(x);
+398         \}
+399 
+400         ans.insert(s);
+401     \}
+402 
+403     \textcolor{keywordflow}{return} ans;
+404 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{measure_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}\label{measure_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}} 
+\index{measure.\+cpp@{measure.\+cpp}!copy\+Function@{copy\+Function}}
+\index{copy\+Function@{copy\+Function}!measure.\+cpp@{measure.\+cpp}}
+\subsubsection{\texorpdfstring{copy\+Function()}{copyFunction()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ copy\+Function (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S,  }\item[{set$<$ T $>$}]{P,  }\item[{set$<$ T $>$}]{P1,  }\item[{\hyperlink{classInterval}{Interval}}]{x\+\_\+int }\end{DoxyParamCaption})}
+
+Implements the copy function as described in the algorithm 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em S,P,P1,x\+\_\+int} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 246 of file measure.\+cpp.
+
+
+\begin{DoxyCode}
+247 \{
+248     set<Stripe> ans;
+249 
+250     map<Interval, Stripe> reverseMap;
+251     vector<T> unionPartition;
+252     vector<T> partition;
+253     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} p : P)
+254     \{
+255         unionPartition.push\_back(p);
+256     \}
+257     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} p1 : P1)
+258     \{
+259         partition.push\_back(p1);
+260     \}
+261 
+262     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} s : S)
+263     \{
+264         reverseMap[s.yInterval] = s;
+265     \}
+266 
+267     T pointer1 = 0, pointer2 = 0;
+268     \textcolor{keywordflow}{for} (T i = 0; i < (T)unionPartition.size() - 1; i++)
+269     \{
+270         \hyperlink{classStripe}{Stripe} s;
+271         s.yInterval = \{unionPartition[i], unionPartition[i + 1]\};
+272         s.xInterval = x\_int;
+273 
+274         pointer2++;
+275         \textcolor{keywordflow}{while} (pointer1 + 1 < partition.size() && unionPartition[pointer2] > partition[pointer1 + 1])
+276         \{
+277             pointer1++;
+278         \}
+279 
+280         \textcolor{comment}{//TODO}
+281         s.xUnion = reverseMap[\{partition[pointer1], partition[pointer1 + 1]\}].xUnion;
+282 
+283         ans.insert(s);
+284     \}
+285 
+286     \textcolor{keywordflow}{return} ans;
+287 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{measure_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}\label{measure_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}} 
+\index{measure.\+cpp@{measure.\+cpp}!interval\+Intersection@{interval\+Intersection}}
+\index{interval\+Intersection@{interval\+Intersection}!measure.\+cpp@{measure.\+cpp}}
+\subsubsection{\texorpdfstring{interval\+Intersection()}{intervalIntersection()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classInterval}{Interval}$>$ interval\+Intersection (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{L1,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{R2 }\end{DoxyParamCaption})}
+
+Finds the intersection of sets of intervals to be used by the compute\+Stripes function 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em L1,R2} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 223 of file measure.\+cpp.
+
+
+\begin{DoxyCode}
+224 \{
+225     map<Interval, T> cnt;
+226     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} l1 : L1)
+227     \{
+228         cnt[l1]++;
+229     \}
+230 
+231     set<Interval> ans;
+232     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} r2 : R2)
+233     \{
+234         \textcolor{keywordflow}{if} (cnt[r2] > 0)
+235             ans.insert(r2);
+236     \}
+237 
+238     \textcolor{keywordflow}{return} ans;
+239 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{measure_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{measure_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{measure.\+cpp@{measure.\+cpp}!main@{main}}
+\index{main@{main}!measure.\+cpp@{measure.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+This is the main function entry point of the program 
+
+Definition at line 600 of file measure.\+cpp.
+
+
+\begin{DoxyCode}
+601 \{
+602     \textcolor{comment}{//cout<<"Enter the number of rectangles that you would like to input: ";}
+603     cin >> numberOfRectangles;
+604 
+605     \textcolor{comment}{//cout<<"Enter the co-ordinates of the upper left corner and the lower right corner
+       respectively:"<<endl;}
+606 
+607     set<Rectangle> rect;
+608     \textcolor{keywordflow}{for} (T i = 0; i < numberOfRectangles; i++)
+609     \{
+610         T x1, x2, y1, y2;
+611         cin >> x1 >> x2 >> y1 >> y2;
+612 
+613         \hyperlink{classRectangle}{Rectangle} r(x1, y1, x2, y2);
+614         rect.insert(r);
+615     \}
+616 
+617     set<Stripe> ans = \hyperlink{measure_8cpp_a32faf605cbf6e5494e309228bdf48833}{RECTANGLE\_DAC}(rect);
+618     cout << \textcolor{stringliteral}{"size of final set of stripes is: "} << ans.size() << endl;
+619 
+620     cout << \textcolor{stringliteral}{"The measure of ths stripes is: "} << \hyperlink{measure_8cpp_a350212d4e224cd81a4c689df94eb395d}{calculateMeasure}(ans) << endl;
+621 \}
+\end{DoxyCode}
+\mbox{\Hypertarget{measure_8cpp_a32faf605cbf6e5494e309228bdf48833}\label{measure_8cpp_a32faf605cbf6e5494e309228bdf48833}} 
+\index{measure.\+cpp@{measure.\+cpp}!R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC@{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC}}
+\index{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC@{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC}!measure.\+cpp@{measure.\+cpp}}
+\subsubsection{\texorpdfstring{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+A\+C()}{RECTANGLE\_DAC()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classRectangle}{Rectangle} $>$}]{rect }\end{DoxyParamCaption})}
+
+Provides a basic setup for divide-\/and-\/conquer algorithm compute\+Stripes(\+S\+T\+R\+I\+P\+E\+S) 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em rect} & \\
+\hline
+\mbox{\tt out}  & {\em return\+Value.\+stripes} & \\
+\hline
+\end{DoxyParams}
+divides the rectangle sides in left and right parts
+
+S\+T\+R\+I\+P\+ES function is called 
+
+Definition at line 569 of file measure.\+cpp.
+
+
+\begin{DoxyCode}
+570 \{
+571 
+572     vector<Edge> verticalEdges;
+573 
+574     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} rectangle : rect) 
+575     \{
+576         \hyperlink{classEdge}{Edge} leftVerticalEdge(rectangle.xLeft, rectangle.yInterval, \textcolor{stringliteral}{"left"});
+577         \hyperlink{classEdge}{Edge} rightVerticalEdge(rectangle.xRight, rectangle.yInterval, \textcolor{stringliteral}{"right"});
+578 
+579         verticalEdges.push\_back(leftVerticalEdge);
+580         verticalEdges.push\_back(rightVerticalEdge);
+581     \}
+582 
+583     sort(verticalEdges.begin(), verticalEdges.end(), [&](\hyperlink{classEdge}{Edge} e1, \hyperlink{classEdge}{Edge} e2) \{
+584         \textcolor{keywordflow}{return} e1.coord < e2.coord;
+585     \});
+586 
+587     \hyperlink{classInterval}{Interval} x\_ext = \{-inf, inf\};
+588     set<Interval> L, R;
+589     set<T> partition;
+590     set<Stripe> stripes;
+591 
+592     \textcolor{keyword}{auto} returnValue = \hyperlink{measure_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}{computeStripes}(verticalEdges, x\_ext, L, R, partition, stripes); 
+593 
+594     \textcolor{keywordflow}{return} returnValue.stripes;
+595 \}
+\end{DoxyCode}
