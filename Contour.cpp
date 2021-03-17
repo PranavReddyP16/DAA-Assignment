@@ -34,10 +34,13 @@ class Interval {
     public:
         T lower;
         T upper;
+        T rect_number;
 
         bool operator < (Interval const &Int) const {
             if(lower!=Int.lower) return lower<Int.lower;
-            else return upper < Int.upper;
+            else if(upper!=Int.upper) return upper < Int.upper;
+            else return rect_number<Int.rect_number;
+
         }
 
         void print() {
@@ -70,23 +73,28 @@ class Rectangle {
         T xRight;
         T yLeft;
         T yRight;
+        T rectNumber;
 
         Interval xInterval;
         Interval yInterval;
 
-        Rectangle(T x1, T y1, T x2, T y2) {
+        Rectangle(T x1, T y1, T x2, T y2, T rectKey) {
             xInterval.upper = max(x1,x2);
             xInterval.lower = min(x1,x2);
+            xInterval.rect_number = rectKey;
             yInterval.upper = max(y1,y2);
             yInterval.lower = min(y1,y2);
+            yInterval.rect_number = rectKey;
 
             xLeft = x1;
             xRight = x2;
             yLeft = y1;
             yRight = y2;
+
+            rectNumber = rectKey;
         }
 
-        Rectangle(Interval X, Interval Y) {
+        Rectangle(Interval X, Interval Y, T rectKey) {
             xLeft = min(X.lower, X.upper);
             xRight = max(X.lower, X.upper);
             yLeft = min(Y.lower, Y.upper);
@@ -94,15 +102,20 @@ class Rectangle {
 
             xInterval.lower = X.lower;
             xInterval.upper = X.upper;
+            xInterval.rect_number = rectKey;
             yInterval.lower = Y.lower;
             yInterval.upper = Y.upper;
+            yInterval.rect_number = rectKey;
+
+            rectNumber = rectKey;
         }
 
         Rectangle() { };
 
         bool operator < (Rectangle const &r) const {
             if(xLeft != r.xLeft) return xLeft < r.xLeft;
-            else return xRight < r.xRight;
+            else if(xRight!=r.xRight) return xRight < r.xRight;
+            else return rectNumber < r.rectNumber;
         }
 };
 
@@ -191,14 +204,14 @@ struct ReturnSet{
 };
 
 set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2) {
-    map<Interval, T> cnt;
+    map<T, T> cnt;
     for(auto l1 : L1) {
-        cnt[l1]++;
+        cnt[l1.rect_number]++;
     }
 
     set<Interval> ans;
     for(auto r2 : R2) {
-        if(cnt[r2] > 0) ans.insert(r2);
+        if(cnt[r2.rect_number] > 0) ans.insert(r2);
     }
 
     return ans;
@@ -207,7 +220,7 @@ set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2) {
 set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
     set<Stripe> ans;
 
-    map<Interval, Stripe> reverseMap;
+    map<pair<T,T>, Stripe> reverseMap;
     vector<T> unionPartition;
     vector<T> partition;
     for(auto p : P) {
@@ -218,9 +231,8 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
     }
 
     for(auto s : S) {
-        reverseMap[s.yInterval] = s;
+        reverseMap[make_pair(s.yInterval.lower, s.yInterval.upper)] = s;
     }
-
 
     T pointer1=0,pointer2=0;
     for(T i=0;i<(T)unionPartition.size()-1;i++) {
@@ -487,8 +499,13 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
     }
 
     sort(verticalEdges.begin(), verticalEdges.end(), [&] (Edge e1, Edge e2) {
-                return e1.coord < e2.coord;
+                if(e1.coord!=e2.coord) return e1.coord < e2.coord;
+                else {
+                    if(e1.side.type=="left" && e2.side.type=="right") return true;
+                    else return false;
+                }
             });
+
 
     Interval x_ext = {-inf,inf};
     set<Interval> L,R;
@@ -497,9 +514,6 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
 
     auto returnValue = computeStripes(verticalEdges, x_ext, L, R, partition, stripes);
 
-    //for(auto x : returnValue.stripes) {
-    //    cout<<x.tree<<endl;
-    //}
     return returnValue.stripes;
 }
 
@@ -520,7 +534,6 @@ void dfs(ctree* u, vector<ctree*> &leaves) {
     }
 }
 
-//TODO Problem is somewhere here, all the other functions below are safe, even dfs appears to work properly
 set<Interval> freeQuery(Interval h, Stripe s) {
     set<Interval> ans;
     vector<ctree*> leaves;
@@ -639,23 +652,62 @@ int main(int argc, char* argv[]) {
         T x1,x2,y1,y2;
         cin>>x1>>x2>>y1>>y2;
 
-        Rectangle r(x1,y1,x2,y2);
+        Rectangle r(x1,y1,x2,y2,i);
         rect.insert(r);
     }
 
     set<Stripe> ans = RECTANGLE_DAC(rect);
     cout<<"size of final set of stripes is: "<<ans.size()<<endl;
-    //for(auto x : ans) {
-    //    cout<<x.tree<<endl;
-    //}
+
+    T measure = calculateMeasure(ans);
     cout<<"The measure of ths stripes is: "<<calculateMeasure(ans)<<endl;
 
-    //for(auto x : ans) {
-    //    dfs2(x.tree);
-    //}
-    set<LineSegment> finalContour = contour(rect, ans);
+    set<LineSegment> finalContourHorizontal = contour(rect, ans);
 
-    for(auto x : finalContour) {
+    map<T, vector<T>> cnt;
+    for(auto x : finalContourHorizontal) {
+        cnt[x.interval.lower].push_back(x.coord);
+        cnt[x.interval.upper].push_back(x.coord);
+    }
+
+    set<LineSegment> finalContourVertical;
+    for(auto x : cnt) {
+        vector<T> temp = x.second;
+        sort(temp.begin(), temp.end());
+
+        for(int i=0;i<(T)temp.size()-1;i+=2) {
+            LineSegment l;
+            l.coord = x.first;
+            l.interval = {temp[i], temp[i+1]};
+
+            finalContourVertical.insert(l);
+        }
+    }
+
+    for(auto x : finalContourHorizontal) {
         x.print();
     }
+    for(auto x : finalContourVertical) {
+        x.print();
+    }
+
+
+    ofstream outputFile;
+    outputFile.open("data.txt");
+
+    outputFile<<numberOfRectangles<<endl;
+    for(auto x : rect) {
+        outputFile<<x.xLeft<<" "<<x.xRight<<" "<<x.yLeft<<" "<<x.yRight<<endl;
+    }
+
+    outputFile<<measure<<endl;
+    outputFile<<finalContourHorizontal.size() + finalContourVertical.size()<<endl;
+    for(auto x : finalContourHorizontal) {
+        outputFile<<x.interval.lower<<" "<<x.coord<<" "<<x.interval.upper<<" "<<x.coord<<endl;
+    }
+    for(auto x : finalContourVertical) {
+        outputFile<<x.coord<<" "<<x.interval.lower<<" "<<x.coord<<" "<<x.interval.upper<<endl;
+    }
+
+    outputFile.close();
 }

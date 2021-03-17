@@ -27,10 +27,12 @@ class Interval {
     public:
         T lower;
         T upper;
+        T rect_number;
 
         bool operator < (Interval const &Int) const {
             if(lower!=Int.lower) return lower<Int.lower;
-            else return upper < Int.upper;
+            else if(upper!=Int.upper) return upper < Int.upper;
+            else return rect_number<Int.rect_number;
         }
 
         void print() {
@@ -42,6 +44,19 @@ class LineSegment {
     public:
         Interval interval;
         T coord;
+        
+        void print() {
+            cout<<"Interval for the line segment is: ";
+            interval.print();
+            cout<<"coord of the line segment is: "<<coord<<endl;
+        }
+
+        //overloading operator to use in sets
+        bool operator < (LineSegment const &l) const {
+            if(coord!=l.coord) return coord<l.coord;
+            else if(interval.lower!=l.interval.lower) return interval.lower<l.interval.lower;
+            else return interval.upper<l.interval.upper;
+        }
 };
 
 class Rectangle {
@@ -50,23 +65,28 @@ class Rectangle {
         T xRight;
         T yLeft;
         T yRight;
+        T rectNumber;
 
         Interval xInterval;
         Interval yInterval;
 
-        Rectangle(T x1, T y1, T x2, T y2) {
+        Rectangle(T x1, T y1, T x2, T y2, T rectKey) {
             xInterval.upper = max(x1,x2);
             xInterval.lower = min(x1,x2);
+            xInterval.rect_number = rectKey;
             yInterval.upper = max(y1,y2);
             yInterval.lower = min(y1,y2);
+            yInterval.rect_number = rectKey;
 
             xLeft = x1;
             xRight = x2;
             yLeft = y1;
             yRight = y2;
+
+            rectNumber = rectKey;
         }
 
-        Rectangle(Interval X, Interval Y) {
+        Rectangle(Interval X, Interval Y, T rectKey) {
             xLeft = min(X.lower, X.upper);
             xRight = max(X.lower, X.upper);
             yLeft = min(Y.lower, Y.upper);
@@ -74,15 +94,20 @@ class Rectangle {
 
             xInterval.lower = X.lower;
             xInterval.upper = X.upper;
+            xInterval.rect_number = rectKey;
             yInterval.lower = Y.lower;
             yInterval.upper = Y.upper;
+            yInterval.rect_number = rectKey;
+
+            rectNumber = rectKey;
         }
 
         Rectangle() { };
 
         bool operator < (Rectangle const &r) const {
             if(xLeft != r.xLeft) return xLeft < r.xLeft;
-            else return xRight < r.xRight;
+            else if(xRight!=r.xRight) return xRight < r.xRight;
+            else return rectNumber < r.rectNumber;
         }
 };
 
@@ -169,14 +194,14 @@ struct ReturnSet{
 };
 
 set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2) {
-    map<Interval, T> cnt;
+    map<T, T> cnt;
     for(auto l1 : L1) {
-        cnt[l1]++;
+        cnt[l1.rect_number]++;
     }
 
     set<Interval> ans;
     for(auto r2 : R2) {
-        if(cnt[r2] > 0) ans.insert(r2);
+        if(cnt[r2.rect_number] > 0) ans.insert(r2);
     }
 
     return ans;
@@ -185,7 +210,7 @@ set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2) {
 set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
     set<Stripe> ans;
 
-    map<Interval, Stripe> reverseMap;
+    map<pair<T,T>, Stripe> reverseMap;
     vector<T> unionPartition;
     vector<T> partition;
     for(auto p : P) {
@@ -196,9 +221,19 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
     }
 
     for(auto s : S) {
-        reverseMap[s.yInterval] = s;
+        reverseMap[make_pair(s.yInterval.lower, s.yInterval.upper)] = s;
     }
 
+    //cout<<"Union partition is: "<<endl;
+    //for(auto x : unionPartition) {
+    //    cout<<x<<" ";
+    //}
+    //cout<<endl;
+    //cout<<"partition is: "<<endl;
+    //for(auto x : partition) {
+    //    cout<<x<<" ";
+    //}
+    //cout<<endl;
 
     T pointer1=0,pointer2=0;
     for(T i=0;i<(T)unionPartition.size()-1;i++) {
@@ -207,11 +242,10 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int) {
         s.xInterval = x_int;
 
         pointer2++;
-        while(pointer1+1 < partition.size() && unionPartition[pointer2] > partition[pointer1+1]) {
+        while(pointer1+1 < (T)partition.size() && unionPartition[pointer2] > partition[pointer1+1]) {
             pointer1++;
         }
         
-        //TODO
         s.xUnion = reverseMap[{partition[pointer1], partition[pointer1+1]}].xUnion;
 
         ans.insert(s);
@@ -232,7 +266,7 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
     for(auto x : S) {
         sVector.push_back(x.yInterval.lower);
         sVector.push_back(x.yInterval.upper);
-        //x.yInterval.print();
+        //x.print();
     }
     //cout<<endl;
 
@@ -250,7 +284,7 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
 
     T p1=0,p2=0;
     //cout<<jVector.size()<<" "<<sVector.size()<<endl;
-    while(p1<jVector.size() && p2<sVector.size()) {
+    while(p1<(T)jVector.size() && p2<(T)sVector.size()) {
         if(sVector[p2]>=jVector[p1] && sVector[p2+1]<=jVector[p1+1]) {
             sTemp[p2/2].xUnion.clear();
             sTemp[p2/2].xUnion.insert(x_ext);
@@ -364,7 +398,7 @@ struct ReturnSet computeStripes (
 
         //splitting vertical edges into two equal sized groups
         vector<Edge> V1,V2;
-        for(T i=0;i<verticalEdges.size();i++) {
+        for(T i=0;i<(T)verticalEdges.size();i++) {
             if(i<xMedian) V1.push_back(verticalEdges[i]);
             else V2.push_back(verticalEdges[i]);
         }
@@ -380,7 +414,6 @@ struct ReturnSet computeStripes (
         ReturnSet rightSubProblem;
         if(V1.size() > 0) leftSubProblem = computeStripes(V1, {x_ext.lower, verticalEdges[xMedian].coord}, L1, R1, P1, S1);
         if(V2.size() > 0) rightSubProblem = computeStripes(V2, {verticalEdges[xMedian].coord,x_ext.upper}, L2, R2, P2, S2);
-
 
         //Using a function to find the intersection of L1 and R2 in O(nlogn) time complexity
         LR = intervalIntersection(leftSubProblem.L, rightSubProblem.R);
@@ -429,7 +462,6 @@ struct ReturnSet computeStripes (
         blackenedsRight = blacken(sRight, L1minusLR);
         assert(blackenedsLeft.size() == blackenedsRight.size());
 
-
         stripes = concat(blackenedsLeft, blackenedsRight, partition, x_ext);
         return {L,R,partition,stripes};
     }
@@ -448,7 +480,11 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
     }
 
     sort(verticalEdges.begin(), verticalEdges.end(), [&] (Edge e1, Edge e2) {
-                return e1.coord < e2.coord;
+                if(e1.coord!=e2.coord) return e1.coord < e2.coord;
+                else {
+                    if(e1.side.type=="left" && e2.side.type=="right") return true;
+                    else return false;
+                }
             });
 
     
@@ -473,14 +509,14 @@ int main(int argc, char* argv[]) {
         T x1,x2,y1,y2;
         cin>>x1>>x2>>y1>>y2;
 
-        Rectangle r(x1,y1,x2,y2);
+        Rectangle r(x1,y1,x2,y2, i);
         rect.insert(r);
     }
 
     set<Stripe> ans = RECTANGLE_DAC(rect);
     cout<<"size of final set of stripes is: "<<ans.size()<<endl;
-    //for(auto x : ans) {
-    //    x.print();
-    //}
+    for(auto x : ans) {
+        x.print();
+    }
     cout<<"The measure of ths stripes is: "<<calculateMeasure(ans)<<endl;
 }
