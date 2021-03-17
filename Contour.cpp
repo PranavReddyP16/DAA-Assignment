@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 #include <regex>
+#include <streambuf>
 using namespace std;
 #define T long long
 
@@ -48,6 +49,19 @@ class LineSegment {
     public:
         Interval interval;
         T coord;
+
+        void print() {
+            cout<<"Interval for the line segment is: ";
+            interval.print();
+            cout<<"coord of the line segment is: "<<coord<<endl;
+        }
+
+        //overloading operator to use in sets
+        bool operator < (LineSegment const &l) const {
+            if(coord!=l.coord) return coord<l.coord;
+            else if(interval.lower!=l.interval.lower) return interval.lower<l.interval.lower;
+            else return interval.upper<l.interval.upper;
+        }
 };
 
 class Rectangle {
@@ -278,6 +292,7 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J) {
 
 set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
     vector<T> partition;
+    T xMedian;
     for(auto p : P) {
         partition.push_back(p);
     }
@@ -287,6 +302,7 @@ set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
 
     for(auto x : S1) {
         blackenedsLeftVector.push_back(x);
+        xMedian = x.xInterval.upper;
     }
     for(auto x : S2) {
         blackenedsRightVector.push_back(x);
@@ -305,13 +321,15 @@ set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int) {
             s.xUnion.insert(x);
         }
 
-        ctree* tree{};
-        tree->x = x_int.upper;
+        ctree* tree = new ctree;
+
+        tree->x = xMedian;
         tree->side = "undefined";
         tree->left_child = blackenedsLeftVector[i].tree;
         tree->right_child = blackenedsRightVector[i].tree;
 
         s.tree = tree;                                                  //(F)
+        //cout<<s.tree->x<<endl;
         
         ans.insert(s);
     }
@@ -348,30 +366,33 @@ struct ReturnSet computeStripes (
 
         stripes.insert({x_ext, {-inf, v.interval.lower}, {}, NULL});                            //(A)
 
-        //cerr<<"the edgetype is: "<<v.side.type<<endl;
         if(v.side.type == "left") {
             L.insert(v.interval);
-            ctree* tree{};
+            ctree* tree = new ctree;
             
             tree->x = v.coord;
             tree->side = "left";
             tree->left_child = NULL;
             tree->right_child = NULL;
+
             S = {x_ext, v.interval, {{v.coord, x_ext.upper}}, tree};                            //(B)
         }
 
         else if(v.side.type == "right") {
             R.insert(v.interval);
-            ctree* tree{};
             
+            ctree* tree = new ctree;
             tree->x = v.coord;
             tree->side = "right";
             tree->left_child = NULL;
             tree->right_child = NULL;
+
             S = {x_ext, v.interval, {{x_ext.lower, v.coord}}, tree};                            //(C)
         }
 
+        cout<<S.tree->x<<endl;
         stripes.insert(S);
+
         stripes.insert({x_ext, {v.interval.upper, inf}, {}, NULL});
 
         partition = {-inf, v.interval.lower, v.interval.upper, inf};
@@ -476,11 +497,17 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect) {
 
     auto returnValue = computeStripes(verticalEdges, x_ext, L, R, partition, stripes);
 
+    //for(auto x : returnValue.stripes) {
+    //    cout<<x.tree<<endl;
+    //}
     return returnValue.stripes;
 }
 
 void dfs(ctree* u, vector<ctree*> &leaves) {
-    if(u->left_child==NULL && u->right_child==NULL) {
+    if(u==NULL) {
+        return;
+    }
+    if(u->left_child==NULL && u->right_child==NULL && u->side!="undefined") {
         leaves.push_back(u);
         return;
     }
@@ -493,29 +520,52 @@ void dfs(ctree* u, vector<ctree*> &leaves) {
     }
 }
 
+//TODO Problem is somewhere here, all the other functions below are safe, even dfs appears to work properly
 set<Interval> freeQuery(Interval h, Stripe s) {
     set<Interval> ans;
     vector<ctree*> leaves;
 
+    ctree* tempTree = new ctree;
+    tempTree->x = -inf;
+    tempTree->left_child = NULL;
+    tempTree->right_child = NULL;
+    tempTree->side = "right";
+
+    leaves.push_back(tempTree);
+
+    //cout<<"s.tree is: "<<s.tree->side<<endl;
     dfs(s.tree, leaves);
 
-    for(int i=0;i<(T)leaves.size()-1;i++) {
-        if(i>0 && h.lower<leaves[i]->x && h.lower>=leaves[i-1]->x) {
-            if(leaves[i]->side=="left") {
-                ans.insert({h.lower, leaves[i]->x});
-            }
+    ctree* tempTree2 = new ctree;
+    tempTree2->x = inf;
+    tempTree2->left_child = NULL;
+    tempTree2->right_child = NULL;
+    tempTree2->side = "left";
+
+    leaves.push_back(tempTree2);
+
+    cout<<"Leaves are: "<<endl;
+    for(auto x : leaves) {
+        cout<<x->x<<" ";
+    }
+    cout<<endl;
+
+    for(int i=0;i<(T)leaves.size();i++) {
+        if(i>0 && h.lower>=leaves[i-1]->x && h.upper<=leaves[i]->x && leaves[i-1]->side=="right" && leaves[i]->side=="left") {
+            ans.insert(h);
+            break;
         }
 
-        else if(h.upper>leaves[i]->x && h.upper<=leaves[i+1]->x) {
-            if(leaves[i]->side == "right") {
-                ans.insert({leaves[i]->x, h.upper});
-            }
+        else if(i>0 && leaves[i-1]->x>=h.lower && leaves[i]->x<=h.upper && leaves[i-1]->side=="right" && leaves[i]->side=="left") {
+            ans.insert({leaves[i-1]->x, leaves[i]->x});
         }
 
-        else if(leaves[i]->x >= h.lower && leaves[i+1]->x <= h.upper) {
-            if(leaves[i]->side=="right" && leaves[i+1]->side=="left") {
-                ans.insert({leaves[i]->x, leaves[i+1]->x});
-            }
+        else if(i>0 && h.lower>=leaves[i-1]->x && h.lower<=leaves[i]->x && leaves[i]->side=="left" && h.upper>=leaves[i]->x) {
+            ans.insert({ h.lower, leaves[i]->x });
+        }
+
+        else if(i>0 && h.upper>=leaves[i-1]->x && h.upper<=leaves[i]->x && leaves[i-1]->side=="right" && h.lower<=leaves[i-1]->x) {
+            ans.insert({ leaves[i-1]->x, h.upper });
         }
     }
 
@@ -574,11 +624,15 @@ set<LineSegment> contour(set<Rectangle> rect, set<Stripe> S) {
     return ans;
 }
 
-int main(int argc, char* argv[]) {
-    //cout<<"Enter the number of rectangles that you would like to input: ";
-    cin>>numberOfRectangles;
+void dfs2(ctree* tree) {
+    cout<<tree->x<<" "<<tree->side<<endl;
 
-    //cout<<"Enter the co-ordinates of the upper left corner and the lower right corner respectively:"<<endl;
+    if(tree->left_child!=NULL) dfs2(tree->left_child);
+    if(tree->right_child!=NULL) dfs2(tree->right_child);
+}
+
+int main(int argc, char* argv[]) {
+    cin>>numberOfRectangles;
 
     set<Rectangle> rect;
     for(T i=0;i<numberOfRectangles;i++) {
@@ -592,9 +646,16 @@ int main(int argc, char* argv[]) {
     set<Stripe> ans = RECTANGLE_DAC(rect);
     cout<<"size of final set of stripes is: "<<ans.size()<<endl;
     //for(auto x : ans) {
-    //    x.print();
+    //    cout<<x.tree<<endl;
     //}
     cout<<"The measure of ths stripes is: "<<calculateMeasure(ans)<<endl;
 
+    //for(auto x : ans) {
+    //    dfs2(x.tree);
+    //}
     set<LineSegment> finalContour = contour(rect, ans);
+
+    for(auto x : finalContour) {
+        x.print();
+    }
 }
