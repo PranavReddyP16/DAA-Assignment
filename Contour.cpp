@@ -952,11 +952,11 @@ int main(int argc, char *argv[])
             horizontalMergedContour.insert(l);
         }
     }
-    cout<<"The merged horizontal edges are: \n";
-    for(auto x : horizontalMergedContour) 
-    {
-        x.print();
-    }
+    //cout<<"The merged horizontal edges are: \n";
+    //for(auto x : horizontalMergedContour) 
+    //{
+    //    x.print();
+    //}
 
     for(auto x : horizontalMergedContour) 
     {

@@ -10,7 +10,7 @@ long long numberOfRectangles;                           ///<The number of rectan
 set<string> edgeType{"left", "right", "bottom", "top"}; ///<set of all possible edgetypes
 
 ///
-///Denotes a cordinate (x,y)
+///Denotes an Integer cordinate (x,y)
 ///
 class Point
 {
@@ -46,7 +46,8 @@ public:
 };
 
 ///
-///Denotes a line_segment
+///Line Segment containing coordinate and Interval
+///comparison operator has been overloaded for use in sets and maps
 ///
 class LineSegment
 {
@@ -74,7 +75,8 @@ public:
 };
 
 ///
-///Denotes a rectangle and can be initialised using (x1,y1,x2,y2) or (interval X,interval Y)
+///Rectangle with the four x and y coordinates as members as well as rectangle id number
+/// To constructors are provided for use in different cases
 ///
 class Rectangle
 {
@@ -174,7 +176,7 @@ public:
 };
 
 ///
-///Stripe is represented using xInterval, yInterval and x coordinates where the rectangles are present
+///Stripe is represented using xInterval, yInterval,x coordinates where the rectangles are present (X_Union) and ctree representing the end points of X_Union
 ///
 class Stripe
 {
@@ -237,7 +239,7 @@ public:
 };
 
 ///
-///Custom data type declared to use in computeStripes function
+///Custom struct type declared to use in computeStripes function as a way of returning multiple objects at once
 ///
 struct ReturnSet
 {
@@ -250,8 +252,9 @@ struct ReturnSet
 
 /**
  * Finds the intersection of sets of intervals to be used by the computeStripes function
- * @param[in] L1,R2 
- * @param[out] ans
+ * @param Set of intervals L1
+ * @param Set of intervals R2
+ * @return Set of intervals ans
 */
 set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2)
 {
@@ -272,9 +275,12 @@ set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2)
 }
 
 /**
- * Implements the copy function as described in the algorithm 
- * @param[in] S,P,P1,x_int 
- * @param[out] ans
+ * Implements the copy function as described in the algorithm by dividing the existing stripes on both sides and setting the X_Union accordingly
+ * @param Set of Stripes S
+ * @param Set of integers P
+ * @param Set of integers P1
+ * @param Interval x_int
+ * @return Set of Stripes ans
 */
 set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int)
 {
@@ -330,9 +336,10 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int)
 }
 
 /**
- * Implements the blacken function as described in the algorithm 
- * @param[in] S,J
- * @param[out] ans
+ * Implements the blacken function as described in the algorithm by taking the stripes for which edges in it don't have a partner in the opposite stripe and setting its X_Union to empty
+ * @param Set of Stripes S
+ * @param Set of Intervals J
+ * @return Set of Stripes ans
 */
 set<Stripe> blacken(set<Stripe> S, set<Interval> J)
 {
@@ -397,9 +404,12 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J)
 }
 
 /**
- * Implements the concat function as described in the algorithm 
- * @param[in] S1,S2,P,x_int
- * @param[out] ans
+ * Implements the concat function as described in the algorithm by concatenating the stripes in both subproblems
+ * @param S1
+ * @param S2
+ * @param P
+ * @param x_int
+ * @return ans
 */
 set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int)
 {
@@ -448,8 +458,8 @@ set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int)
 
 /**
  * Computes the final area of the rectangles
- * @param[in] S
- * @param[out] ans
+ * @param Set of Stripes S
+ * @return Integer ans
 */
 T calculateMeasure(set<Stripe> S)
 {
@@ -469,9 +479,14 @@ T calculateMeasure(set<Stripe> S)
 }
 
 /**
- * STRIPES function according to the algorithm
- * @param[in] verticalEdges,x_ext,L,R,partition,stripes
- * @param[out] ReturnSet object
+ * STRIPES function according to the algorithm in which there are Divide, Conquer, and Merge steps
+ * @param Vector of Edges verticalEdges
+ * @param Interval x_ext
+ * @param Set of Intervals L
+ * @param Set of Intervals R
+ * @param Set of Integers partition
+ * @param Set of Stripes stripes
+ * @return ReturnSet object
 */
 struct ReturnSet computeStripes(
     vector<Edge> verticalEdges,
@@ -605,8 +620,8 @@ struct ReturnSet computeStripes(
 
 /**
  * Provides a basic setup for divide-and-conquer algorithm computeStripes(STRIPES)
- * @param[in] rect 
- * @param[out] returnValue.stripes
+ * @param Set of Rectangles rect 
+ * @return Set of Stripes returnValue.stripes
  * 
 */
 set<Stripe> RECTANGLE_DAC(set<Rectangle> rect)
@@ -667,9 +682,9 @@ int main(int argc, char *argv[])
 
     set<Stripe> ans = RECTANGLE_DAC(rect);
     cout << "size of final set of stripes is: " << ans.size() << endl;
-    for (auto x : ans)
-    {
-        x.print();
-    }
+    //for (auto x : ans)
+    //{
+    //    x.print();
+    //}
     cout << "The measure of ths stripes is: " << calculateMeasure(ans) << endl;
 }
