@@ -12,7 +12,7 @@ set<string> edgeType{"left", "right", "bottom", "top"};
 set<string> lru{"left", "right", "undefined"};
 
 ///
-///Denotes a cordinate (x,y)
+///Co-ordinate (x,y) where x and y are integers
 ///
 class Point
 {
@@ -22,7 +22,7 @@ public:
 };
 
 ///
-///Denotes an tree a part of stripe
+///Tree node containing members x coordinate, side type, left child, and right child.
 ///
 struct ctree
 {
@@ -33,7 +33,8 @@ struct ctree
 };
 
 ///
-///
+///Interval containing lower coordinate, upper coordinate, and rectangle id for which it belongs to
+/// comparison operator has also been overloaded to allow for use in sets and maps
 ///
 class Interval
 {
@@ -59,7 +60,8 @@ public:
 };
 
 ///
-///Denotes a line_segment
+///Line Segment containing coordinate and Interval
+///comparison operator has been overloaded for use in sets and maps
 ///
 class LineSegment
 {
@@ -87,7 +89,8 @@ public:
 };
 
 ///
-///Denotes a rectangle and can be initialised using (x1,y1,x2,y2) or (interval X,interval Y)
+///Rectangle with the four x and y coordinates as members as well as rectangle id number
+/// To constructors are provided for use in different cases
 ///
 class Rectangle
 {
@@ -186,7 +189,7 @@ public:
     }
 };
 ///
-///Stripe is represented using xInterval, yInterval,x coordinates where the rectangles are present and the tree
+///Stripe is represented using xInterval, yInterval,x coordinates where the rectangles are present (X_Union) and ctree representing the end points of X_Union
 ///
 class Stripe
 {
@@ -251,7 +254,7 @@ public:
 };
 
 ///
-///Custom data type declared to use in computeStripes function
+///Custom struct type declared to use in computeStripes function as a way of returning multiple objects at once
 ///
 struct ReturnSet
 {
@@ -264,8 +267,9 @@ struct ReturnSet
 
 /**
  * Finds the intersection of sets of intervals to be used by the computeStripes function
- * @param[in] L1,R2 
- * @param[out] ans
+ * @param Set of intervals L1
+ * @param Set of intervals R2
+ * @return Set of intervals ans
 */
 set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2)
 {
@@ -286,9 +290,12 @@ set<Interval> intervalIntersection(set<Interval> L1, set<Interval> R2)
 }
 
 /**
- * Implements the copy function as described in the algorithm 
- * @param[in] S,P,P1,x_int 
- * @param[out] ans
+ * Implements the copy function as described in the algorithm by dividing the existing stripes on both sides and setting the X_Union accordingly
+ * @param Set of Stripes S
+ * @param Set of integers P
+ * @param Set of integers P1
+ * @param Interval x_int
+ * @return Set of Stripes ans
 */
 set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int)
 {
@@ -334,9 +341,10 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int)
 }
 
 /**
- * Implements the blacken function as described in the algorithm 
- * @param[in] S,J
- * @param[out] ans
+ * Implements the blacken function as described in the algorithm by taking the stripes for which edges in it don't have a partner in the opposite stripe and setting its X_Union to empty
+ * @param Set of Stripes S
+ * @param Set of Intervals J
+ * @return Set of Stripes ans
 */
 set<Stripe> blacken(set<Stripe> S, set<Interval> J)
 {
@@ -397,9 +405,12 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J)
 }
 
 /**
- * Implements the concat function as described in the algorithm 
- * @param[in] S1,S2,P,x_int
- * @param[out] ans
+ * Implements the concat function as described in the algorithm by concatenating the stripes in both subproblems
+ * @param S1
+ * @param S2
+ * @param P
+ * @param x_int
+ * @return ans
 */
 set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int)
 {
@@ -457,8 +468,8 @@ set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int)
 
 /**
  * Computes the final area of the rectangles
- * @param[in] S
- * @param[out] ans
+ * @param Set of Stripes S
+ * @return Integer ans
 */
 T calculateMeasure(set<Stripe> S)
 {
@@ -478,9 +489,14 @@ T calculateMeasure(set<Stripe> S)
 }
 
 /**
- * STRIPES function according to the algorithm
- * @param[in] verticalEdges,x_ext,L,R,partition,stripes
- * @param[out] ReturnSet object
+ * STRIPES function according to the algorithm in which there are Divide, Conquer, and Merge steps
+ * @param Vector of Edges verticalEdges
+ * @param Interval x_ext
+ * @param Set of Intervals L
+ * @param Set of Intervals R
+ * @param Set of Integers partition
+ * @param Set of Stripes stripes
+ * @return ReturnSet object
 */
 struct ReturnSet computeStripes(
     vector<Edge> verticalEdges,
@@ -524,7 +540,7 @@ struct ReturnSet computeStripes(
             S = {x_ext, v.interval, {{x_ext.lower, v.coord}}, tree}; //(C)
         }
 
-        cout << S.tree->x << endl;
+        //cout << S.tree->x << endl;
         stripes.insert(S);
 
         stripes.insert({x_ext, {v.interval.upper, inf}, {}, NULL});
@@ -628,8 +644,8 @@ struct ReturnSet computeStripes(
 
 /**
  * Provides a basic setup for divide-and-conquer algorithm computeStripes(STRIPES)
- * @param[in] rect 
- * @param[out] returnValue.stripes
+ * @param Set of Rectangles rect 
+ * @return Set of Stripes returnValue.stripes
  * 
 */
 set<Stripe> RECTANGLE_DAC(set<Rectangle> rect)
@@ -669,9 +685,9 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect)
 }
 
 /**
- * Finds the intersection of using ctree
- * @param[in] ctree,leaves 
- * @param[out] void
+ * Finds the leaves of a ctree and pushes it into an array
+ * @param pointer to ctree u
+ * @param Vector of pointers to a ctree leaves (passed by reference)
  * 
 */
 void dfs(ctree *u, vector<ctree *> &leaves)
@@ -697,9 +713,10 @@ void dfs(ctree *u, vector<ctree *> &leaves)
 }
 
 /**
- * 
- * @param[in] h,s 
- * @param[out] ans
+ * Finds the free part of an intersection intervals of an interval with the X_Union of a stripe
+ * @param Interval h
+ * @param Stripe s
+ * @return Set of Intervals ans
  * 
 */
 set<Interval> freeQuery(Interval h, Stripe s)
@@ -726,12 +743,12 @@ set<Interval> freeQuery(Interval h, Stripe s)
 
     leaves.push_back(tempTree2);
 
-    cout << "Leaves are: " << endl;
-    for (auto x : leaves)
-    {
-        cout << x->x << " ";
-    }
-    cout << endl;
+    //cout << "Leaves are: " << endl;
+    //for (auto x : leaves)
+    //{
+    //    cout << x->x << " ";
+    //}
+    //cout << endl;
 
     for (int i = 0; i < (T)leaves.size(); i++)
     {
@@ -761,9 +778,10 @@ set<Interval> freeQuery(Interval h, Stripe s)
 }
 
 /**
- * 
- * @param[in] h,S 
- * @param[out] ans
+ * Given an edge, matches the corresponding Stripe to pass to freeQuery
+ * @param Edge h
+ * @param Set of Stripes S
+ * @return Set of Line Segments ans
  * 
 */
 set<LineSegment> contourPieces(Edge h, set<Stripe> S)
@@ -805,9 +823,10 @@ set<LineSegment> contourPieces(Edge h, set<Stripe> S)
 }
 
 /**
- * 
- * @param[in] rect,S 
- * @param[out] ans
+ * Divides the rectangles into horizontal edges and feeds them to the other functions
+ * @param Set of Rectangles rect
+ * @param Set of Stripes S
+ * @return set of Line Segments ans
  * 
 */
 set<LineSegment> contour(set<Rectangle> rect, set<Stripe> S)
@@ -837,19 +856,56 @@ set<LineSegment> contour(set<Rectangle> rect, set<Stripe> S)
 }
 
 /**
- * 
- * @param[in] tree 
- * @param[out] void
+ * Utility function to help with debugging
+ * @param ctree *tree 
  * 
 */
 void dfs2(ctree *tree)
 {
-    cout << tree->x << " " << tree->side << endl;
+    //cout << tree->x << " " << tree->side << endl;
 
     if (tree->left_child != NULL)
         dfs2(tree->left_child);
     if (tree->right_child != NULL)
         dfs2(tree->right_child);
+}
+
+/**
+ * Utility function to find the union of a set of intervals
+ * @param vector of intervals a
+ * @return set of intervals ans
+ */
+set<Interval> mergeIntervals(vector<Interval> a) {
+    int n = (T)a.size();
+    set<Interval> ans;
+
+    if(n==0) return ans;
+
+    sort(a.begin(), a.end(), [&](Interval u, Interval v) { return u.lower < v.lower ;});
+
+    stack<Interval> s;
+    s.push(a[0]);
+
+    for(int i=1;i<n;i++) {
+        Interval top = s.top();
+        if(top.upper < a[i].lower) {
+            s.push(a[i]);
+        }
+
+        else if(top.upper < a[i].upper) {
+            top.upper = a[i].upper;
+            s.pop();
+            s.push(top);
+        }
+    }
+
+    while(!s.empty()) {
+        Interval temp = s.top();
+        ans.insert(temp);
+        s.pop();
+    }
+
+    return ans;
 }
 
 /**
@@ -878,7 +934,31 @@ int main(int argc, char *argv[])
     set<LineSegment> finalContourHorizontal = contour(rect, ans);
 
     map<T, vector<T>> cnt;
+    map<T, vector<Interval>> yMap;
     for (auto x : finalContourHorizontal)
+    {
+        yMap[x.coord].push_back(x.interval);
+    }
+
+    set<LineSegment> horizontalMergedContour;
+    for(auto x : yMap) 
+    {
+        set<Interval> temp = mergeIntervals(x.second);
+        for(auto y : temp) {
+            LineSegment l;
+            l.coord = x.first;
+            l.interval = y;
+
+            horizontalMergedContour.insert(l);
+        }
+    }
+    cout<<"The merged horizontal edges are: \n";
+    for(auto x : horizontalMergedContour) 
+    {
+        x.print();
+    }
+
+    for(auto x : horizontalMergedContour) 
     {
         cnt[x.interval.lower].push_back(x.coord);
         cnt[x.interval.upper].push_back(x.coord);
@@ -900,14 +980,14 @@ int main(int argc, char *argv[])
         }
     }
 
-    for (auto x : finalContourHorizontal)
-    {
-        x.print();
-    }
-    for (auto x : finalContourVertical)
-    {
-        x.print();
-    }
+    //for (auto x : finalContourHorizontal)
+    //{
+    //    x.print();
+    //}
+    //for (auto x : finalContourVertical)
+    //{
+    //    x.print();
+    //}
 
     ofstream outputFile;
     outputFile.open("data.txt");
