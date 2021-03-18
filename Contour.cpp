@@ -743,13 +743,6 @@ set<Interval> freeQuery(Interval h, Stripe s)
 
     leaves.push_back(tempTree2);
 
-    //cout << "Leaves are: " << endl;
-    //for (auto x : leaves)
-    //{
-    //    cout << x->x << " ";
-    //}
-    //cout << endl;
-
     for (int i = 0; i < (T)leaves.size(); i++)
     {
         if (i > 0 && h.lower >= leaves[i - 1]->x && h.upper <= leaves[i]->x && leaves[i - 1]->side == "right" && leaves[i]->side == "left")
@@ -862,8 +855,6 @@ set<LineSegment> contour(set<Rectangle> rect, set<Stripe> S)
 */
 void dfs2(ctree *tree)
 {
-    //cout << tree->x << " " << tree->side << endl;
-
     if (tree->left_child != NULL)
         dfs2(tree->left_child);
     if (tree->right_child != NULL)
@@ -952,11 +943,6 @@ int main(int argc, char *argv[])
             horizontalMergedContour.insert(l);
         }
     }
-    //cout<<"The merged horizontal edges are: \n";
-    //for(auto x : horizontalMergedContour) 
-    //{
-    //    x.print();
-    //}
 
     for(auto x : horizontalMergedContour) 
     {
@@ -979,15 +965,6 @@ int main(int argc, char *argv[])
             finalContourVertical.insert(l);
         }
     }
-
-    //for (auto x : finalContourHorizontal)
-    //{
-    //    x.print();
-    //}
-    //for (auto x : finalContourVertical)
-    //{
-    //    x.print();
-    //}
 
     T contourLength=0;
 

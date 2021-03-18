@@ -303,17 +303,6 @@ set<Stripe> copyFunction(set<Stripe> S, set<T> P, set<T> P1, Interval x_int)
         reverseMap[make_pair(s.yInterval.lower, s.yInterval.upper)] = s;
     }
 
-    //cout<<"Union partition is: "<<endl;
-    //for(auto x : unionPartition) {
-    //    cout<<x<<" ";
-    //}
-    //cout<<endl;
-    //cout<<"partition is: "<<endl;
-    //for(auto x : partition) {
-    //    cout<<x<<" ";
-    //}
-    //cout<<endl;
-
     T pointer1 = 0, pointer2 = 0;
     for (T i = 0; i < (T)unionPartition.size() - 1; i++)
     {
@@ -414,13 +403,10 @@ set<Stripe> blacken(set<Stripe> S, set<Interval> J)
 set<Stripe> concat(set<Stripe> S1, set<Stripe> S2, set<T> P, Interval x_int)
 {
     vector<T> partition;
-    //cout<<"The partition vector for this concat round is:"<<endl;
     for (auto p : P)
     {
         partition.push_back(p);
-        //cout<<p<<" ";
     }
-    //cout<<endl;
 
     vector<Stripe> blackenedsLeftVector;
     vector<Stripe> blackenedsRightVector;
@@ -497,7 +483,6 @@ struct ReturnSet computeStripes(
     set<Stripe> stripes)
 {
 
-    //cerr<<"Size of vertical edges is: "<<verticalEdges.size()<<endl;
     if (verticalEdges.size() == 1)
     {
         Stripe S;
@@ -505,7 +490,6 @@ struct ReturnSet computeStripes(
 
         stripes.insert({x_ext, {-inf, v.interval.lower}, {}});
 
-        //cerr<<"the edgetype is: "<<v.side.type<<endl;
         if (v.side.type == "left")
         {
             L.insert(v.interval);
@@ -665,10 +649,7 @@ set<Stripe> RECTANGLE_DAC(set<Rectangle> rect)
 */
 int main(int argc, char *argv[])
 {
-    //cout<<"Enter the number of rectangles that you would like to input: ";
     cin >> numberOfRectangles;
-
-    //cout<<"Enter the co-ordinates of the upper left corner and the lower right corner respectively:"<<endl;
 
     set<Rectangle> rect;
     for (T i = 0; i < numberOfRectangles; i++)
@@ -682,9 +663,5 @@ int main(int argc, char *argv[])
 
     set<Stripe> ans = RECTANGLE_DAC(rect);
     cout << "size of final set of stripes is: " << ans.size() << endl;
-    //for (auto x : ans)
-    //{
-    //    x.print();
-    //}
     cout << "The measure of ths stripes is: " << calculateMeasure(ans) << endl;
 }
