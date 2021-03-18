@@ -1,164 +1,197 @@
-\hypertarget{Measure_8cpp}{}\section{Measure.\+cpp File Reference}
-\label{Measure_8cpp}\index{Measure.\+cpp@{Measure.\+cpp}}
+\hypertarget{Measure_8cpp}{}\doxysection{Measure.\+cpp File Reference}
+\label{Measure_8cpp}\index{Measure.cpp@{Measure.cpp}}
 {\ttfamily \#include $<$bits/stdc++.\+h$>$}\newline
 {\ttfamily \#include $<$regex$>$}\newline
 Include dependency graph for Measure.\+cpp\+:
 % FIG 0
-\subsection*{Classes}
+\doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{classPoint}{Point}
+class \mbox{\hyperlink{classPoint}{Point}}
 \item 
-class \hyperlink{classInterval}{Interval}
+class \mbox{\hyperlink{classInterval}{Interval}}
 \item 
-class \hyperlink{classLineSegment}{Line\+Segment}
+class \mbox{\hyperlink{classLineSegment}{Line\+Segment}}
 \item 
-class \hyperlink{classRectangle}{Rectangle}
+class \mbox{\hyperlink{classRectangle}{Rectangle}}
 \item 
-class \hyperlink{classEdgeType}{Edge\+Type}
+class \mbox{\hyperlink{classEdgeType}{Edge\+Type}}
 \item 
-class \hyperlink{classEdge}{Edge}
+class \mbox{\hyperlink{classEdge}{Edge}}
 \item 
-class \hyperlink{classStripe}{Stripe}
+class \mbox{\hyperlink{classStripe}{Stripe}}
 \item 
-class \hyperlink{classPartition}{Partition}
+class \mbox{\hyperlink{classPartition}{Partition}}
 \item 
-struct \hyperlink{structReturnSet}{Return\+Set}
+struct \mbox{\hyperlink{structReturnSet}{Return\+Set}}
 \end{DoxyCompactItemize}
-\subsection*{Macros}
+\doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{Measure_8cpp_a0acb682b8260ab1c60b918599864e2e5}\label{Measure_8cpp_a0acb682b8260ab1c60b918599864e2e5}} 
 \#define {\bfseries T}~long long
 \end{DoxyCompactItemize}
-\subsection*{Functions}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-set$<$ \hyperlink{classInterval}{Interval} $>$ \hyperlink{Measure_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}{interval\+Intersection} (set$<$ \hyperlink{classInterval}{Interval} $>$ L1, set$<$ \hyperlink{classInterval}{Interval} $>$ R2)
+set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$ \mbox{\hyperlink{Measure_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}{interval\+Intersection}} (set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$ L1, set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$ R2)
 \item 
-set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{Measure_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}{copy\+Function} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S, set$<$ T $>$ P, set$<$ T $>$ P1, \hyperlink{classInterval}{Interval} x\+\_\+int)
+set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$ \mbox{\hyperlink{Measure_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}{copy\+Function}} (set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$ S, set$<$ T $>$ P, set$<$ T $>$ P1, \mbox{\hyperlink{classInterval}{Interval}} x\+\_\+int)
 \item 
-set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{Measure_8cpp_a7081468a9dbabf996cd604feaa4c537a}{blacken} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S, set$<$ \hyperlink{classInterval}{Interval} $>$ J)
+set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$ \mbox{\hyperlink{Measure_8cpp_a7081468a9dbabf996cd604feaa4c537a}{blacken}} (set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$ S, set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$ J)
 \item 
-set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{Measure_8cpp_aab15ea286786048f44dff97f975a4db8}{concat} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S1, set$<$ \hyperlink{classStripe}{Stripe} $>$ S2, set$<$ T $>$ P, \hyperlink{classInterval}{Interval} x\+\_\+int)
+set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$ \mbox{\hyperlink{Measure_8cpp_aab15ea286786048f44dff97f975a4db8}{concat}} (set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$ S1, set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$ S2, set$<$ T $>$ P, \mbox{\hyperlink{classInterval}{Interval}} x\+\_\+int)
 \item 
-T \hyperlink{Measure_8cpp_a350212d4e224cd81a4c689df94eb395d}{calculate\+Measure} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S)
+T \mbox{\hyperlink{Measure_8cpp_a350212d4e224cd81a4c689df94eb395d}{calculate\+Measure}} (set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$ S)
 \item 
-struct \hyperlink{structReturnSet}{Return\+Set} \hyperlink{Measure_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}{compute\+Stripes} (vector$<$ \hyperlink{classEdge}{Edge} $>$ vertical\+Edges, \hyperlink{classInterval}{Interval} x\+\_\+ext, set$<$ \hyperlink{classInterval}{Interval} $>$ L, set$<$ \hyperlink{classInterval}{Interval} $>$ R, set$<$ T $>$ partition, set$<$ \hyperlink{classStripe}{Stripe} $>$ stripes)
+struct \mbox{\hyperlink{structReturnSet}{Return\+Set}} \mbox{\hyperlink{Measure_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}{compute\+Stripes}} (vector$<$ \mbox{\hyperlink{classEdge}{Edge}} $>$ vertical\+Edges, \mbox{\hyperlink{classInterval}{Interval}} x\+\_\+ext, set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$ L, set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$ R, set$<$ T $>$ partition, set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$ stripes)
 \item 
-set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{Measure_8cpp_a32faf605cbf6e5494e309228bdf48833}{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC} (set$<$ \hyperlink{classRectangle}{Rectangle} $>$ rect)
+set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$ \mbox{\hyperlink{Measure_8cpp_a32faf605cbf6e5494e309228bdf48833}{RECTANGLE\+\_\+\+DAC}} (set$<$ \mbox{\hyperlink{classRectangle}{Rectangle}} $>$ rect)
 \item 
-int \hyperlink{Measure_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+int \mbox{\hyperlink{Measure_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
 \end{DoxyCompactItemize}
-\subsection*{Variables}
+\doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{Measure_8cpp_afcbf24b8935fa352fd707595cdc3782b}\label{Measure_8cpp_afcbf24b8935fa352fd707595cdc3782b}} 
 const T {\bfseries inf} = 1e10 + 5
 \item 
 \mbox{\Hypertarget{Measure_8cpp_a3a47f01b0a195cf72c123d48bf44ad27}\label{Measure_8cpp_a3a47f01b0a195cf72c123d48bf44ad27}} 
-long long \hyperlink{Measure_8cpp_a3a47f01b0a195cf72c123d48bf44ad27}{number\+Of\+Rectangles}
+long long \mbox{\hyperlink{Measure_8cpp_a3a47f01b0a195cf72c123d48bf44ad27}{number\+Of\+Rectangles}}
 \begin{DoxyCompactList}\small\item\em The number of rectangles as given by the user. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{Measure_8cpp_a677525400a439b4716d08d478a97048b}\label{Measure_8cpp_a677525400a439b4716d08d478a97048b}} 
-set$<$ string $>$ \hyperlink{Measure_8cpp_a677525400a439b4716d08d478a97048b}{edge\+Type} \{\char`\"{}left\char`\"{}, \char`\"{}right\char`\"{}, \char`\"{}bottom\char`\"{}, \char`\"{}top\char`\"{}\}
+set$<$ string $>$ \mbox{\hyperlink{Measure_8cpp_a677525400a439b4716d08d478a97048b}{edge\+Type}} \{\char`\"{}left\char`\"{}, \char`\"{}right\char`\"{}, \char`\"{}bottom\char`\"{}, \char`\"{}top\char`\"{}\}
 \begin{DoxyCompactList}\small\item\em set of all possible edgetypes \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Function Documentation}
+\doxysubsection{Function Documentation}
 \mbox{\Hypertarget{Measure_8cpp_a7081468a9dbabf996cd604feaa4c537a}\label{Measure_8cpp_a7081468a9dbabf996cd604feaa4c537a}} 
-\index{Measure.\+cpp@{Measure.\+cpp}!blacken@{blacken}}
-\index{blacken@{blacken}!Measure.\+cpp@{Measure.\+cpp}}
-\subsubsection{\texorpdfstring{blacken()}{blacken()}}
-{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ blacken (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{J }\end{DoxyParamCaption})}
+\index{Measure.cpp@{Measure.cpp}!blacken@{blacken}}
+\index{blacken@{blacken}!Measure.cpp@{Measure.cpp}}
+\doxysubsubsection{\texorpdfstring{blacken()}{blacken()}}
+{\footnotesize\ttfamily set$<$\mbox{\hyperlink{classStripe}{Stripe}}$>$ blacken (\begin{DoxyParamCaption}\item[{set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$}]{S,  }\item[{set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$}]{J }\end{DoxyParamCaption})}
 
-Implements the blacken function as described in the algorithm 
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em S,J} & \\
+Implements the blacken function as described in the algorithm by taking the stripes for which edges in it don\textquotesingle{}t have a partner in the opposite stripe and setting its X\+\_\+\+Union to empty 
+\begin{DoxyParams}{Parameters}
+{\em Set} & of Stripes S \\
 \hline
-\mbox{\tt out}  & {\em ans} & \\
+{\em Set} & of Intervals J \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Set of Stripes ans 
+\end{DoxyReturn}
 \mbox{\Hypertarget{Measure_8cpp_a350212d4e224cd81a4c689df94eb395d}\label{Measure_8cpp_a350212d4e224cd81a4c689df94eb395d}} 
-\index{Measure.\+cpp@{Measure.\+cpp}!calculate\+Measure@{calculate\+Measure}}
-\index{calculate\+Measure@{calculate\+Measure}!Measure.\+cpp@{Measure.\+cpp}}
-\subsubsection{\texorpdfstring{calculate\+Measure()}{calculateMeasure()}}
-{\footnotesize\ttfamily T calculate\+Measure (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S }\end{DoxyParamCaption})}
+\index{Measure.cpp@{Measure.cpp}!calculateMeasure@{calculateMeasure}}
+\index{calculateMeasure@{calculateMeasure}!Measure.cpp@{Measure.cpp}}
+\doxysubsubsection{\texorpdfstring{calculateMeasure()}{calculateMeasure()}}
+{\footnotesize\ttfamily T calculate\+Measure (\begin{DoxyParamCaption}\item[{set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$}]{S }\end{DoxyParamCaption})}
 
 Computes the final area of the rectangles 
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em S} & \\
-\hline
-\mbox{\tt out}  & {\em ans} & \\
+\begin{DoxyParams}{Parameters}
+{\em Set} & of Stripes S \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Integer ans 
+\end{DoxyReturn}
 \mbox{\Hypertarget{Measure_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}\label{Measure_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}} 
-\index{Measure.\+cpp@{Measure.\+cpp}!compute\+Stripes@{compute\+Stripes}}
-\index{compute\+Stripes@{compute\+Stripes}!Measure.\+cpp@{Measure.\+cpp}}
-\subsubsection{\texorpdfstring{compute\+Stripes()}{computeStripes()}}
-{\footnotesize\ttfamily struct \hyperlink{structReturnSet}{Return\+Set} compute\+Stripes (\begin{DoxyParamCaption}\item[{vector$<$ \hyperlink{classEdge}{Edge} $>$}]{vertical\+Edges,  }\item[{\hyperlink{classInterval}{Interval}}]{x\+\_\+ext,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{L,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{R,  }\item[{set$<$ T $>$}]{partition,  }\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{stripes }\end{DoxyParamCaption})}
+\index{Measure.cpp@{Measure.cpp}!computeStripes@{computeStripes}}
+\index{computeStripes@{computeStripes}!Measure.cpp@{Measure.cpp}}
+\doxysubsubsection{\texorpdfstring{computeStripes()}{computeStripes()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structReturnSet}{Return\+Set}} compute\+Stripes (\begin{DoxyParamCaption}\item[{vector$<$ \mbox{\hyperlink{classEdge}{Edge}} $>$}]{vertical\+Edges,  }\item[{\mbox{\hyperlink{classInterval}{Interval}}}]{x\+\_\+ext,  }\item[{set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$}]{L,  }\item[{set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$}]{R,  }\item[{set$<$ T $>$}]{partition,  }\item[{set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$}]{stripes }\end{DoxyParamCaption})}
 
-S\+T\+R\+I\+P\+ES function according to the algorithm 
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em vertical\+Edges,x\+\_\+ext,L,R,partition,stripes} & \\
+STRIPES function according to the algorithm in which there are Divide, Conquer, and Merge steps 
+\begin{DoxyParams}{Parameters}
+{\em Vector} & of Edges vertical\+Edges \\
 \hline
-\mbox{\tt out}  & {\em \hyperlink{structReturnSet}{Return\+Set}} & object \\
+{\em \mbox{\hyperlink{classInterval}{Interval}}} & x\+\_\+ext \\
+\hline
+{\em Set} & of Intervals L \\
+\hline
+{\em Set} & of Intervals R \\
+\hline
+{\em Set} & of Integers partition \\
+\hline
+{\em Set} & of Stripes stripes \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{structReturnSet}{Return\+Set}} object 
+\end{DoxyReturn}
 \mbox{\Hypertarget{Measure_8cpp_aab15ea286786048f44dff97f975a4db8}\label{Measure_8cpp_aab15ea286786048f44dff97f975a4db8}} 
-\index{Measure.\+cpp@{Measure.\+cpp}!concat@{concat}}
-\index{concat@{concat}!Measure.\+cpp@{Measure.\+cpp}}
-\subsubsection{\texorpdfstring{concat()}{concat()}}
-{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ concat (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S1,  }\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S2,  }\item[{set$<$ T $>$}]{P,  }\item[{\hyperlink{classInterval}{Interval}}]{x\+\_\+int }\end{DoxyParamCaption})}
+\index{Measure.cpp@{Measure.cpp}!concat@{concat}}
+\index{concat@{concat}!Measure.cpp@{Measure.cpp}}
+\doxysubsubsection{\texorpdfstring{concat()}{concat()}}
+{\footnotesize\ttfamily set$<$\mbox{\hyperlink{classStripe}{Stripe}}$>$ concat (\begin{DoxyParamCaption}\item[{set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$}]{S1,  }\item[{set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$}]{S2,  }\item[{set$<$ T $>$}]{P,  }\item[{\mbox{\hyperlink{classInterval}{Interval}}}]{x\+\_\+int }\end{DoxyParamCaption})}
 
-Implements the concat function as described in the algorithm 
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em S1,S2,P,x\+\_\+int} & \\
+Implements the concat function as described in the algorithm by concatenating the stripes in both subproblems 
+\begin{DoxyParams}{Parameters}
+{\em S1} & \\
 \hline
-\mbox{\tt out}  & {\em ans} & \\
+{\em S2} & \\
+\hline
+{\em P} & \\
+\hline
+{\em x\+\_\+int} & \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ans 
+\end{DoxyReturn}
 \mbox{\Hypertarget{Measure_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}\label{Measure_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}} 
-\index{Measure.\+cpp@{Measure.\+cpp}!copy\+Function@{copy\+Function}}
-\index{copy\+Function@{copy\+Function}!Measure.\+cpp@{Measure.\+cpp}}
-\subsubsection{\texorpdfstring{copy\+Function()}{copyFunction()}}
-{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ copy\+Function (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S,  }\item[{set$<$ T $>$}]{P,  }\item[{set$<$ T $>$}]{P1,  }\item[{\hyperlink{classInterval}{Interval}}]{x\+\_\+int }\end{DoxyParamCaption})}
+\index{Measure.cpp@{Measure.cpp}!copyFunction@{copyFunction}}
+\index{copyFunction@{copyFunction}!Measure.cpp@{Measure.cpp}}
+\doxysubsubsection{\texorpdfstring{copyFunction()}{copyFunction()}}
+{\footnotesize\ttfamily set$<$\mbox{\hyperlink{classStripe}{Stripe}}$>$ copy\+Function (\begin{DoxyParamCaption}\item[{set$<$ \mbox{\hyperlink{classStripe}{Stripe}} $>$}]{S,  }\item[{set$<$ T $>$}]{P,  }\item[{set$<$ T $>$}]{P1,  }\item[{\mbox{\hyperlink{classInterval}{Interval}}}]{x\+\_\+int }\end{DoxyParamCaption})}
 
-Implements the copy function as described in the algorithm 
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em S,P,P1,x\+\_\+int} & \\
+Implements the copy function as described in the algorithm by dividing the existing stripes on both sides and setting the X\+\_\+\+Union accordingly 
+\begin{DoxyParams}{Parameters}
+{\em Set} & of Stripes S \\
 \hline
-\mbox{\tt out}  & {\em ans} & \\
+{\em Set} & of integers P \\
+\hline
+{\em Set} & of integers P1 \\
+\hline
+{\em \mbox{\hyperlink{classInterval}{Interval}}} & x\+\_\+int \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Set of Stripes ans 
+\end{DoxyReturn}
 \mbox{\Hypertarget{Measure_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}\label{Measure_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}} 
-\index{Measure.\+cpp@{Measure.\+cpp}!interval\+Intersection@{interval\+Intersection}}
-\index{interval\+Intersection@{interval\+Intersection}!Measure.\+cpp@{Measure.\+cpp}}
-\subsubsection{\texorpdfstring{interval\+Intersection()}{intervalIntersection()}}
-{\footnotesize\ttfamily set$<$\hyperlink{classInterval}{Interval}$>$ interval\+Intersection (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{L1,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{R2 }\end{DoxyParamCaption})}
+\index{Measure.cpp@{Measure.cpp}!intervalIntersection@{intervalIntersection}}
+\index{intervalIntersection@{intervalIntersection}!Measure.cpp@{Measure.cpp}}
+\doxysubsubsection{\texorpdfstring{intervalIntersection()}{intervalIntersection()}}
+{\footnotesize\ttfamily set$<$\mbox{\hyperlink{classInterval}{Interval}}$>$ interval\+Intersection (\begin{DoxyParamCaption}\item[{set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$}]{L1,  }\item[{set$<$ \mbox{\hyperlink{classInterval}{Interval}} $>$}]{R2 }\end{DoxyParamCaption})}
 
 Finds the intersection of sets of intervals to be used by the compute\+Stripes function 
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em L1,R2} & \\
+\begin{DoxyParams}{Parameters}
+{\em Set} & of intervals L1 \\
 \hline
-\mbox{\tt out}  & {\em ans} & \\
+{\em Set} & of intervals R2 \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Set of intervals ans 
+\end{DoxyReturn}
 \mbox{\Hypertarget{Measure_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{Measure_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
-\index{Measure.\+cpp@{Measure.\+cpp}!main@{main}}
-\index{main@{main}!Measure.\+cpp@{Measure.\+cpp}}
-\subsubsection{\texorpdfstring{main()}{main()}}
+\index{Measure.cpp@{Measure.cpp}!main@{main}}
+\index{main@{main}!Measure.cpp@{Measure.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
 {\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
 
 This is the main function entry point of the program \mbox{\Hypertarget{Measure_8cpp_a32faf605cbf6e5494e309228bdf48833}\label{Measure_8cpp_a32faf605cbf6e5494e309228bdf48833}} 
-\index{Measure.\+cpp@{Measure.\+cpp}!R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC@{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC}}
-\index{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC@{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC}!Measure.\+cpp@{Measure.\+cpp}}
-\subsubsection{\texorpdfstring{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+A\+C()}{RECTANGLE\_DAC()}}
-{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classRectangle}{Rectangle} $>$}]{rect }\end{DoxyParamCaption})}
+\index{Measure.cpp@{Measure.cpp}!RECTANGLE\_DAC@{RECTANGLE\_DAC}}
+\index{RECTANGLE\_DAC@{RECTANGLE\_DAC}!Measure.cpp@{Measure.cpp}}
+\doxysubsubsection{\texorpdfstring{RECTANGLE\_DAC()}{RECTANGLE\_DAC()}}
+{\footnotesize\ttfamily set$<$\mbox{\hyperlink{classStripe}{Stripe}}$>$ RECTANGLE\+\_\+\+DAC (\begin{DoxyParamCaption}\item[{set$<$ \mbox{\hyperlink{classRectangle}{Rectangle}} $>$}]{rect }\end{DoxyParamCaption})}
 
-Provides a basic setup for divide-\/and-\/conquer algorithm compute\+Stripes(\+S\+T\+R\+I\+P\+E\+S) 
-\begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in}  & {\em rect} & \\
-\hline
-\mbox{\tt out}  & {\em return\+Value.\+stripes} & \\
+Provides a basic setup for divide-\/and-\/conquer algorithm compute\+Stripes(\+STRIPES) 
+\begin{DoxyParams}{Parameters}
+{\em Set} & of Rectangles rect \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Set of Stripes return\+Value.\+stripes 
+\end{DoxyReturn}
