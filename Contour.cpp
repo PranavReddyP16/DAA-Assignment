@@ -5,7 +5,7 @@
 using namespace std;
 #define T long long
 
-const T inf = 1e6 + 5;
+const T inf = 1e10 + 5;
 
 long long numberOfRectangles;
 set<string> edgeType{"left", "right", "bottom", "top"};
@@ -929,7 +929,7 @@ int main(int argc, char *argv[])
     cout << "size of final set of stripes is: " << ans.size() << endl;
 
     T measure = calculateMeasure(ans);
-    cout << "The measure of ths stripes is: " << calculateMeasure(ans) << endl;
+    cout << "The measure of the stripes is: " << calculateMeasure(ans) << endl;
 
     set<LineSegment> finalContourHorizontal = contour(rect, ans);
 
@@ -989,6 +989,8 @@ int main(int argc, char *argv[])
     //    x.print();
     //}
 
+    T contourLength=0;
+
     ofstream outputFile;
     outputFile.open("data.txt");
 
@@ -999,15 +1001,19 @@ int main(int argc, char *argv[])
     }
 
     outputFile << measure << endl;
-    outputFile << finalContourHorizontal.size() + finalContourVertical.size() << endl;
-    for (auto x : finalContourHorizontal)
+    outputFile << horizontalMergedContour.size() + finalContourVertical.size() << endl;
+    for (auto x : horizontalMergedContour)
     {
         outputFile << x.interval.lower << " " << x.coord << " " << x.interval.upper << " " << x.coord << endl;
+        contourLength += abs(x.interval.upper - x.interval.lower);
     }
     for (auto x : finalContourVertical)
     {
         outputFile << x.coord << " " << x.interval.lower << " " << x.coord << " " << x.interval.upper << endl;
+        contourLength += abs(x.interval.upper - x.interval.lower);
     }
 
     outputFile.close();
+
+    cout<<"Total length of Contours is: "<<contourLength<<endl;
 }

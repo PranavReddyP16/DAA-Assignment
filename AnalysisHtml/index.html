@@ -42,7 +42,7 @@
               </div>
               <div class="textpane">
                 <h4>Time analysis</h4>
-                <p>5 microsec</p>
+                <p> less than 100 milliseconds </p>
               </div>
             </div>
             <div class="graph">
@@ -80,7 +80,7 @@
               </div>
               <div class="textpane">
                 <h4>Time analysis</h4>
-                <p>5 microsec</p>
+                <p>less than 100 milliseconds</p>
               </div>
             </div>
             <div class="graph">
@@ -120,7 +120,7 @@
               </div>
               <div class="textpane">
                 <h4>Time analysis</h4>
-                <p>5 microsec</p>
+                <p>less than 100 milliseconds</p>
               </div>
             </div>
             <div class="graph">
@@ -163,7 +163,7 @@
               </div>
               <div class="textpane">
                 <h4>Time analysis</h4>
-                <p>5 microsec</p>
+                <p>less than 100 milliseconds</p>
               </div>
             </div>
             <div class="graph">
@@ -200,7 +200,7 @@
               </div>
               <div class="textpane">
                 <h4>Time analysis</h4>
-                <p>5 microsec</p>
+                <p>less than 100 milliseconds</p>
               </div>
             </div>
             <div class="graph">
@@ -234,7 +234,7 @@
               </div>
               <div class="textpane">
                 <h4>Time analysis</h4>
-                <p>5 microsec</p>
+                <p>less than 100 milliseconds</p>
               </div>
             </div>
             <div class="graph">
@@ -268,7 +268,7 @@
               </div>
               <div class="textpane">
                 <h4>Time analysis</h4>
-                <p>5 microsec</p>
+                <p>less than 100 milliseconds</p>
               </div>
             </div>
             <div class="graph">
@@ -302,7 +302,7 @@
               </div>
               <div class="textpane">
                 <h4>Time analysis</h4>
-                <p>5 microsec</p>
+                <p> 300 milliseconds</p>
               </div>
             </div>
             <div class="graph">
@@ -406,6 +406,16 @@
             brought down to O(n) with an optimized two pointer algorithm which
             is what we implemented. Hence even this function was O(n).
           </li>
+          <li>
+              Finding complete set of contour edges after obtaining the horizontal
+              ones: To get the vertical edges from the horizontal edges, we used a
+              line sweep algorithm that runs in O(n) keeping in mind that there have
+              to be an even number of horizontal edges at every x coordinate. To 
+              ensure that this algorithm worked correctly, we needed to make sure that
+              none of the horizontal edges overlapped. To accomplish this, we made use
+              of a simple sorting followed by a linear time algorithm using a stack
+              Since this operation is in O(nlogn), the overall complexity does not change.
+          </li>
 
           <li>
             For measure, the major functions like copy,blacken and concat
@@ -422,9 +432,60 @@
             the number of contour pieces.
           </li>
           <li>
-            In both cases, the space complexity is O(nlogn) calculated similar
+            In both cases, the space complexity for stripe calculation is O(nlogn) calculated similar
             to the time complexity. Contours can be calculated in O(p) time and
-            space where p is the number of contour pieces.
+            space where p is the number of contour pieces. This analysis is given in more 
+            detail in the paper.
+          </li>
+        </ul>
+      </div>
+      <!-- TO COPY AREA -->
+      <!-- TO COPY AREA -->
+      <div class="key-insights">
+        <h2>Issues in Coding</h2>
+        <ul>
+          <li>
+              The main issue in the measure problem was the implementation of the 
+              given algorithm. Since it was the beginning we had not yet fully wrapped
+              our heads around the genius of the algorithm itself so we were having 
+              trouble implementing it since we had not fully understood it.
+          </li>
+          <li>
+              Once we had gone through the paper a few more times, we had understood
+              the main idea behind the algorithm. The next problem that came up was 
+              attempting to debug a divide and conquer algorithm. Since the entire 
+              flow of the algorithm was based on the recursion tree, we were finding it
+              a little difficult to identify where the bugs were showing up. The way we
+              countered this was by writing verbose print statements along with perticular
+              variables to determine where in the flow of the entire code the bugs were
+              appearing.
+          </li>
+          <li>
+              The main problem we faced with contour was the use of pointers. Initially
+              one blunder we made was trying to initialise pointers to objects without
+              actually creating the objects themselves.
+          </li>
+          <li>
+              Once we figured that out, we coded the rest of the algorithm, but upon 
+              writing a few print statements we realised that the objects that the pointers
+              were pointing to contained garbage values. After some digging around we found
+              that the reason this was happening was because the objects were created in either
+              a function or a loop and were immediately being destroyed the moment they went
+              out of scope. We handled this by using the "new" operator in C++ which allocates 
+              the memory for the object onto the heap instead of the stack. This retains the 
+              memory even after the scope has ended.
+          </li>
+
+          <li>
+              Once we found the horizontal contour pieces, we needed a way to find the vertical
+              ones. To do so we came up with a line sweep algorithm that works in O(n) time
+              complexity. But the issue was that the set of horizontal contour pieces we had
+              consisted of multiple overlapping edges, which was causing the algorithm to
+              fail in certain cases. We discovered this only after stress testing against randomly
+              generated test cases. To fix this we wrote another function that found the Union of
+              all the horizontal contour pieces that ran in O(n) complexity and which made use of
+              a stack. This gave the proper output and upon further stress testing, our code seemed
+              to be working perfectly.
           </li>
         </ul>
       </div>

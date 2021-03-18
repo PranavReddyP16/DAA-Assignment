@@ -38,8 +38,8 @@ lc = mc.LineCollection(lines,color='r',linewidths=4)
 ax.add_collection(lc)
 
 
-ax.xaxis.set_major_locator(MultipleLocator(1))
-ax.yaxis.set_major_locator(MultipleLocator(1))
+#ax.xaxis.set_major_locator(MultipleLocator(1))
+#ax.yaxis.set_major_locator(MultipleLocator(1))
 plt.axis('equal')
 plt.grid(alpha=1)
 ax.autoscale_view()
