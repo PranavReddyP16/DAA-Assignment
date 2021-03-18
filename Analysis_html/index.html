@@ -437,6 +437,14 @@
             space where p is the number of contour pieces. This analysis is given in more 
             detail in the paper.
           </li>
+          <li>
+              One more thing to note is the method of testing we implemented. We used the publicly 
+              available testlib.h library to generate random coordinates for the rectangle corners
+              within the range [0, k*n], where n is the number of rectangles in the test case and k
+              is some constant that is manually changed. This was done to constrain the values of the
+              coordinates from exceeding the number of rectangles themselves, essentially keeping them
+              within a certain area so that we obtain human readable figures.
+          </li>
         </ul>
       </div>
       <!-- TO COPY AREA -->
@@ -486,6 +494,17 @@
               all the horizontal contour pieces that ran in O(n) complexity and which made use of
               a stack. This gave the proper output and upon further stress testing, our code seemed
               to be working perfectly.
+          </li>
+        </ul>
+      </div>
+      <!-- TO COPY AREA -->
+      <!-- TO COPY AREA -->
+      <div class="key-insights">
+        <h2>References</h2>
+        <ul>
+          <li>
+              Apart from the given paper the only external information we used was testlib.h to generate
+              random test cases.
           </li>
         </ul>
       </div>
