@@ -1,0 +1,245 @@
+\hypertarget{Contour_8cpp}{}\section{Contour.\+cpp File Reference}
+\label{Contour_8cpp}\index{Contour.\+cpp@{Contour.\+cpp}}
+{\ttfamily \#include $<$bits/stdc++.\+h$>$}\newline
+{\ttfamily \#include $<$regex$>$}\newline
+{\ttfamily \#include $<$streambuf$>$}\newline
+Include dependency graph for Contour.\+cpp\+:
+% FIG 0
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classPoint}{Point}
+\item 
+struct \hyperlink{structctree}{ctree}
+\item 
+class \hyperlink{classInterval}{Interval}
+\item 
+class \hyperlink{classLineSegment}{Line\+Segment}
+\item 
+class \hyperlink{classRectangle}{Rectangle}
+\item 
+class \hyperlink{classEdgeType}{Edge\+Type}
+\item 
+class \hyperlink{classEdge}{Edge}
+\item 
+class \hyperlink{classStripe}{Stripe}
+\item 
+class \hyperlink{classPartition}{Partition}
+\item 
+struct \hyperlink{structReturnSet}{Return\+Set}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{Contour_8cpp_a0acb682b8260ab1c60b918599864e2e5}\label{Contour_8cpp_a0acb682b8260ab1c60b918599864e2e5}} 
+\#define {\bfseries T}~long long
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+set$<$ \hyperlink{classInterval}{Interval} $>$ \hyperlink{Contour_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}{interval\+Intersection} (set$<$ \hyperlink{classInterval}{Interval} $>$ L1, set$<$ \hyperlink{classInterval}{Interval} $>$ R2)
+\item 
+set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{Contour_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}{copy\+Function} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S, set$<$ T $>$ P, set$<$ T $>$ P1, \hyperlink{classInterval}{Interval} x\+\_\+int)
+\item 
+set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{Contour_8cpp_a7081468a9dbabf996cd604feaa4c537a}{blacken} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S, set$<$ \hyperlink{classInterval}{Interval} $>$ J)
+\item 
+set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{Contour_8cpp_aab15ea286786048f44dff97f975a4db8}{concat} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S1, set$<$ \hyperlink{classStripe}{Stripe} $>$ S2, set$<$ T $>$ P, \hyperlink{classInterval}{Interval} x\+\_\+int)
+\item 
+T \hyperlink{Contour_8cpp_a350212d4e224cd81a4c689df94eb395d}{calculate\+Measure} (set$<$ \hyperlink{classStripe}{Stripe} $>$ S)
+\item 
+struct \hyperlink{structReturnSet}{Return\+Set} \hyperlink{Contour_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}{compute\+Stripes} (vector$<$ \hyperlink{classEdge}{Edge} $>$ vertical\+Edges, \hyperlink{classInterval}{Interval} x\+\_\+ext, set$<$ \hyperlink{classInterval}{Interval} $>$ L, set$<$ \hyperlink{classInterval}{Interval} $>$ R, set$<$ T $>$ partition, set$<$ \hyperlink{classStripe}{Stripe} $>$ stripes)
+\item 
+set$<$ \hyperlink{classStripe}{Stripe} $>$ \hyperlink{Contour_8cpp_a32faf605cbf6e5494e309228bdf48833}{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC} (set$<$ \hyperlink{classRectangle}{Rectangle} $>$ rect)
+\item 
+void \hyperlink{Contour_8cpp_a8f1d14b0d03f4764077172cada1b6164}{dfs} (\hyperlink{structctree}{ctree} $\ast$u, vector$<$ \hyperlink{structctree}{ctree} $\ast$$>$ \&leaves)
+\item 
+set$<$ \hyperlink{classInterval}{Interval} $>$ \hyperlink{Contour_8cpp_aa72f2d0e3929b7498a394ee3b077287f}{free\+Query} (\hyperlink{classInterval}{Interval} h, \hyperlink{classStripe}{Stripe} s)
+\item 
+set$<$ \hyperlink{classLineSegment}{Line\+Segment} $>$ \hyperlink{Contour_8cpp_ab8689b8ef6ffcf905618e2276c351e92}{contour\+Pieces} (\hyperlink{classEdge}{Edge} h, set$<$ \hyperlink{classStripe}{Stripe} $>$ S)
+\item 
+set$<$ \hyperlink{classLineSegment}{Line\+Segment} $>$ \hyperlink{Contour_8cpp_aa18b33fcb7be5020f01d3e0ddf294114}{contour} (set$<$ \hyperlink{classRectangle}{Rectangle} $>$ rect, set$<$ \hyperlink{classStripe}{Stripe} $>$ S)
+\item 
+void \hyperlink{Contour_8cpp_aed30dce9a979127513948783b78f91d1}{dfs2} (\hyperlink{structctree}{ctree} $\ast$tree)
+\item 
+int \hyperlink{Contour_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{Contour_8cpp_afcbf24b8935fa352fd707595cdc3782b}\label{Contour_8cpp_afcbf24b8935fa352fd707595cdc3782b}} 
+const T {\bfseries inf} = 1e6 + 5
+\item 
+\mbox{\Hypertarget{Contour_8cpp_a3a47f01b0a195cf72c123d48bf44ad27}\label{Contour_8cpp_a3a47f01b0a195cf72c123d48bf44ad27}} 
+long long {\bfseries number\+Of\+Rectangles}
+\item 
+\mbox{\Hypertarget{Contour_8cpp_a677525400a439b4716d08d478a97048b}\label{Contour_8cpp_a677525400a439b4716d08d478a97048b}} 
+set$<$ string $>$ {\bfseries edge\+Type} \{\char`\"{}left\char`\"{}, \char`\"{}right\char`\"{}, \char`\"{}bottom\char`\"{}, \char`\"{}top\char`\"{}\}
+\item 
+\mbox{\Hypertarget{Contour_8cpp_a25421b64f0a5911df79c10b9b94a8279}\label{Contour_8cpp_a25421b64f0a5911df79c10b9b94a8279}} 
+set$<$ string $>$ {\bfseries lru} \{\char`\"{}left\char`\"{}, \char`\"{}right\char`\"{}, \char`\"{}undefined\char`\"{}\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{Contour_8cpp_a7081468a9dbabf996cd604feaa4c537a}\label{Contour_8cpp_a7081468a9dbabf996cd604feaa4c537a}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!blacken@{blacken}}
+\index{blacken@{blacken}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{blacken()}{blacken()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ blacken (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{J }\end{DoxyParamCaption})}
+
+Implements the blacken function as described in the algorithm 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em S,J} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_a350212d4e224cd81a4c689df94eb395d}\label{Contour_8cpp_a350212d4e224cd81a4c689df94eb395d}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!calculate\+Measure@{calculate\+Measure}}
+\index{calculate\+Measure@{calculate\+Measure}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{calculate\+Measure()}{calculateMeasure()}}
+{\footnotesize\ttfamily T calculate\+Measure (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S }\end{DoxyParamCaption})}
+
+Computes the final area of the rectangles 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em S} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}\label{Contour_8cpp_ac9d9cfa33b129ebfd7dae403ed646180}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!compute\+Stripes@{compute\+Stripes}}
+\index{compute\+Stripes@{compute\+Stripes}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{compute\+Stripes()}{computeStripes()}}
+{\footnotesize\ttfamily struct \hyperlink{structReturnSet}{Return\+Set} compute\+Stripes (\begin{DoxyParamCaption}\item[{vector$<$ \hyperlink{classEdge}{Edge} $>$}]{vertical\+Edges,  }\item[{\hyperlink{classInterval}{Interval}}]{x\+\_\+ext,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{L,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{R,  }\item[{set$<$ T $>$}]{partition,  }\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{stripes }\end{DoxyParamCaption})}
+
+S\+T\+R\+I\+P\+ES function according to the algorithm 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em vertical\+Edges,x\+\_\+ext,L,R,partition,stripes} & \\
+\hline
+\mbox{\tt out}  & {\em \hyperlink{structReturnSet}{Return\+Set}} & object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_aab15ea286786048f44dff97f975a4db8}\label{Contour_8cpp_aab15ea286786048f44dff97f975a4db8}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!concat@{concat}}
+\index{concat@{concat}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{concat()}{concat()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ concat (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S1,  }\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S2,  }\item[{set$<$ T $>$}]{P,  }\item[{\hyperlink{classInterval}{Interval}}]{x\+\_\+int }\end{DoxyParamCaption})}
+
+Implements the concat function as described in the algorithm 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em S1,S2,P,x\+\_\+int} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_aa18b33fcb7be5020f01d3e0ddf294114}\label{Contour_8cpp_aa18b33fcb7be5020f01d3e0ddf294114}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!contour@{contour}}
+\index{contour@{contour}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{contour()}{contour()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classLineSegment}{Line\+Segment}$>$ contour (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classRectangle}{Rectangle} $>$}]{rect,  }\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em rect,S} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_ab8689b8ef6ffcf905618e2276c351e92}\label{Contour_8cpp_ab8689b8ef6ffcf905618e2276c351e92}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!contour\+Pieces@{contour\+Pieces}}
+\index{contour\+Pieces@{contour\+Pieces}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{contour\+Pieces()}{contourPieces()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classLineSegment}{Line\+Segment}$>$ contour\+Pieces (\begin{DoxyParamCaption}\item[{\hyperlink{classEdge}{Edge}}]{h,  }\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em h,S} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}\label{Contour_8cpp_ab9e88b9d504afff4dd5d036d42def5f6}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!copy\+Function@{copy\+Function}}
+\index{copy\+Function@{copy\+Function}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{copy\+Function()}{copyFunction()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ copy\+Function (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classStripe}{Stripe} $>$}]{S,  }\item[{set$<$ T $>$}]{P,  }\item[{set$<$ T $>$}]{P1,  }\item[{\hyperlink{classInterval}{Interval}}]{x\+\_\+int }\end{DoxyParamCaption})}
+
+Implements the copy function as described in the algorithm 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em S,P,P1,x\+\_\+int} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_a8f1d14b0d03f4764077172cada1b6164}\label{Contour_8cpp_a8f1d14b0d03f4764077172cada1b6164}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!dfs@{dfs}}
+\index{dfs@{dfs}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{dfs()}{dfs()}}
+{\footnotesize\ttfamily void dfs (\begin{DoxyParamCaption}\item[{\hyperlink{structctree}{ctree} $\ast$}]{u,  }\item[{vector$<$ \hyperlink{structctree}{ctree} $\ast$$>$ \&}]{leaves }\end{DoxyParamCaption})}
+
+Finds the intersection of using ctree 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em ctree,leaves} & \\
+\hline
+\mbox{\tt out}  & {\em void} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_aed30dce9a979127513948783b78f91d1}\label{Contour_8cpp_aed30dce9a979127513948783b78f91d1}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!dfs2@{dfs2}}
+\index{dfs2@{dfs2}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{dfs2()}{dfs2()}}
+{\footnotesize\ttfamily void dfs2 (\begin{DoxyParamCaption}\item[{\hyperlink{structctree}{ctree} $\ast$}]{tree }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em tree} & \\
+\hline
+\mbox{\tt out}  & {\em void} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_aa72f2d0e3929b7498a394ee3b077287f}\label{Contour_8cpp_aa72f2d0e3929b7498a394ee3b077287f}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!free\+Query@{free\+Query}}
+\index{free\+Query@{free\+Query}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{free\+Query()}{freeQuery()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classInterval}{Interval}$>$ free\+Query (\begin{DoxyParamCaption}\item[{\hyperlink{classInterval}{Interval}}]{h,  }\item[{\hyperlink{classStripe}{Stripe}}]{s }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em h,s} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}\label{Contour_8cpp_a694ccc98dc701f61bf0b89164fbf7ccb}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!interval\+Intersection@{interval\+Intersection}}
+\index{interval\+Intersection@{interval\+Intersection}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{interval\+Intersection()}{intervalIntersection()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classInterval}{Interval}$>$ interval\+Intersection (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{L1,  }\item[{set$<$ \hyperlink{classInterval}{Interval} $>$}]{R2 }\end{DoxyParamCaption})}
+
+Finds the intersection of sets of intervals to be used by the compute\+Stripes function 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em L1,R2} & \\
+\hline
+\mbox{\tt out}  & {\em ans} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Contour_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{Contour_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!main@{main}}
+\index{main@{main}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+This is the main function entry point of the program \mbox{\Hypertarget{Contour_8cpp_a32faf605cbf6e5494e309228bdf48833}\label{Contour_8cpp_a32faf605cbf6e5494e309228bdf48833}} 
+\index{Contour.\+cpp@{Contour.\+cpp}!R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC@{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC}}
+\index{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC@{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC}!Contour.\+cpp@{Contour.\+cpp}}
+\subsubsection{\texorpdfstring{R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+A\+C()}{RECTANGLE\_DAC()}}
+{\footnotesize\ttfamily set$<$\hyperlink{classStripe}{Stripe}$>$ R\+E\+C\+T\+A\+N\+G\+L\+E\+\_\+\+D\+AC (\begin{DoxyParamCaption}\item[{set$<$ \hyperlink{classRectangle}{Rectangle} $>$}]{rect }\end{DoxyParamCaption})}
+
+Provides a basic setup for divide-\/and-\/conquer algorithm compute\+Stripes(\+S\+T\+R\+I\+P\+E\+S) 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em rect} & \\
+\hline
+\mbox{\tt out}  & {\em return\+Value.\+stripes} & \\
+\hline
+\end{DoxyParams}
