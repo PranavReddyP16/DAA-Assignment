@@ -445,6 +445,16 @@
               coordinates from exceeding the number of rectangles themselves, essentially keeping them
               within a certain area so that we obtain human readable figures.
           </li>
+          <li>
+              We generated random test cases of various sizes to compare with each other. We tried to 
+              handle every case that we could think of. We also tested against large number of rectangles
+              to test for robustness and scalability. We found that while the visualisation tool takes a 
+              large amount of time for large contours, the algorithm itself runs relatively quickly. To make
+              testing easier we have written a bash script that can run the algorithm for a custom input
+              or for a test file depending on the command line argument. This also feeds the coordinates
+              of the contour pieces into a file which is then read by the visualisation script to plot the
+              contour pieces.
+          </li>
         </ul>
       </div>
       <!-- TO COPY AREA -->
