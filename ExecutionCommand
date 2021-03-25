@@ -1,0 +1,6 @@
+To execute the script run the following command - 
+
+./run_contours.sh + optional testfile name
+
+
+The documentation has been done through doxygen and analysis folder describes about the algorithm.
