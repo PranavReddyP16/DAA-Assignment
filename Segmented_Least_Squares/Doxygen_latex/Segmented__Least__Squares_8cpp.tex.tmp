@@ -1,0 +1,91 @@
+\hypertarget{Segmented__Least__Squares_8cpp}{}\doxysection{Segmented\+\_\+\+Least\+\_\+\+Squares.\+cpp File Reference}
+\label{Segmented__Least__Squares_8cpp}\index{Segmented\_Least\_Squares.cpp@{Segmented\_Least\_Squares.cpp}}
+{\ttfamily \#include \char`\"{}bits/stdc++.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$ext/pb\+\_\+ds/assoc\+\_\+container.\+hpp$>$}\newline
+{\ttfamily \#include $<$ext/pb\+\_\+ds/tree\+\_\+policy.\+hpp$>$}\newline
+Include dependency graph for Segmented\+\_\+\+Least\+\_\+\+Squares.\+cpp\+:
+% FIG 0
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{classPoint}{Point}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{Segmented__Least__Squares_8cpp_a3df2815d4345f7dfb2829b645295f0a1}\label{Segmented__Least__Squares_8cpp_a3df2815d4345f7dfb2829b645295f0a1}} 
+\#define {\bfseries ordered\+\_\+set}~tree$<$int, null\+\_\+type,less$<$int$>$, rb\+\_\+tree\+\_\+tag,tree\+\_\+order\+\_\+statistics\+\_\+node\+\_\+update$>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{Segmented__Least__Squares_8cpp_a9b7accb83f0285938f7d18faaa07f126}\label{Segmented__Least__Squares_8cpp_a9b7accb83f0285938f7d18faaa07f126}} 
+high\+\_\+resolution\+\_\+clock\+::time\+\_\+point {\bfseries cur\+Time} ()
+\item 
+pair$<$ long double, long double $>$ \mbox{\hyperlink{Segmented__Least__Squares_8cpp_ae83ca2e4c373a84a4854134894915bbd}{calculate\+Coefficients}} (vector$<$ \mbox{\hyperlink{classPoint}{Point}} $>$ \&points, int i, int j)
+\item 
+long double \mbox{\hyperlink{Segmented__Least__Squares_8cpp_af27613d3755757d97bf97a61e703c631}{find\+Distance}} (long long x, long long y, long double A, long double B)
+\item 
+signed \mbox{\hyperlink{Segmented__Least__Squares_8cpp_a2e8e4bd67297bfced7c84eea11935633}{main}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{Segmented__Least__Squares_8cpp_a5fadc8178efdf5606d8fa37909b64fda}\label{Segmented__Least__Squares_8cpp_a5fadc8178efdf5606d8fa37909b64fda}} 
+const long double {\bfseries inf} = 1e18
+\item 
+\mbox{\Hypertarget{Segmented__Least__Squares_8cpp_a211beb98adfc4719d3e775845ec57b3e}\label{Segmented__Least__Squares_8cpp_a211beb98adfc4719d3e775845ec57b3e}} 
+const int {\bfseries mod} = 1e9 + 7
+\item 
+\mbox{\Hypertarget{Segmented__Least__Squares_8cpp_a0cde13907a9fb99fef0fa57abc2a0af3}\label{Segmented__Least__Squares_8cpp_a0cde13907a9fb99fef0fa57abc2a0af3}} 
+const int {\bfseries mod2} = 998244353
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{Segmented__Least__Squares_8cpp_ae83ca2e4c373a84a4854134894915bbd}\label{Segmented__Least__Squares_8cpp_ae83ca2e4c373a84a4854134894915bbd}} 
+\index{Segmented\_Least\_Squares.cpp@{Segmented\_Least\_Squares.cpp}!calculateCoefficients@{calculateCoefficients}}
+\index{calculateCoefficients@{calculateCoefficients}!Segmented\_Least\_Squares.cpp@{Segmented\_Least\_Squares.cpp}}
+\doxysubsubsection{\texorpdfstring{calculateCoefficients()}{calculateCoefficients()}}
+{\footnotesize\ttfamily pair$<$long double, long double$>$ calculate\+Coefficients (\begin{DoxyParamCaption}\item[{vector$<$ \mbox{\hyperlink{classPoint}{Point}} $>$ \&}]{points,  }\item[{int}]{i,  }\item[{int}]{j }\end{DoxyParamCaption})}
+
+Given a contiguous subsegment of points, finds the coefficients of line of best fit for those points 
+\begin{DoxyParams}{Parameters}
+{\em Vector} & of points (passed by reference to reduce time complexity due to copying) \\
+\hline
+{\em Start} & index of subsegment \\
+\hline
+{\em Ending} & index of subsegment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pair of decimals containing x coefficient and constant term of the line equation respectively 
+\end{DoxyReturn}
+\mbox{\Hypertarget{Segmented__Least__Squares_8cpp_af27613d3755757d97bf97a61e703c631}\label{Segmented__Least__Squares_8cpp_af27613d3755757d97bf97a61e703c631}} 
+\index{Segmented\_Least\_Squares.cpp@{Segmented\_Least\_Squares.cpp}!findDistance@{findDistance}}
+\index{findDistance@{findDistance}!Segmented\_Least\_Squares.cpp@{Segmented\_Least\_Squares.cpp}}
+\doxysubsubsection{\texorpdfstring{findDistance()}{findDistance()}}
+{\footnotesize\ttfamily long double find\+Distance (\begin{DoxyParamCaption}\item[{long long}]{x,  }\item[{long long}]{y,  }\item[{long double}]{A,  }\item[{long double}]{B }\end{DoxyParamCaption})}
+
+Given a point and a line, find the square of distance to that line 
+\begin{DoxyParams}{Parameters}
+{\em X} & coordinate of the point \\
+\hline
+{\em Y} & coordinate of the point \\
+\hline
+{\em X} & coefficient of the line equation \\
+\hline
+{\em Constant} & term of the line equation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Square of distance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{Segmented__Least__Squares_8cpp_a2e8e4bd67297bfced7c84eea11935633}\label{Segmented__Least__Squares_8cpp_a2e8e4bd67297bfced7c84eea11935633}} 
+\index{Segmented\_Least\_Squares.cpp@{Segmented\_Least\_Squares.cpp}!main@{main}}
+\index{main@{main}!Segmented\_Least\_Squares.cpp@{Segmented\_Least\_Squares.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily signed main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Main driver function 
