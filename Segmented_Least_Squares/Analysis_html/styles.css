@@ -78,8 +78,8 @@ html {
 }
 
 .key-insights {
-  padding: 30px;
-  width: 50vw;
+  text-align: justify;
+  width: 100%;
   margin: auto;
 }
 
@@ -91,7 +91,7 @@ html {
 .key-insights ul {
   padding: 10px;
   background: #192a56;
-  padding: 30px;
+  padding: 10px;
 }
 
 .key-insights ul li {
