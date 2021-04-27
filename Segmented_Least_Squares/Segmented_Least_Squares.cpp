@@ -30,8 +30,8 @@ high_resolution_clock::time_point curTime() { return high_resolution_clock::now(
 
 class Point {
     public:
-        long long x;
-        long long y;
+        long double x;
+        long double y;
 };
 
 /**
@@ -44,10 +44,10 @@ class Point {
 pair<long double, long double> calculateCoefficients(vector<Point> &points, int i, int j) {
     long long n = i-j+1;
 
-    long long xy = 0;
-    long long x = 0;
-    long long y = 0;
-    long long xSquared = 0;
+    long double xy = 0;
+    long double x = 0;
+    long double y = 0;
+    long double xSquared = 0;
     for(int k=j;k<=i;k++) {
         xy += points[k].x*points[k].y;
         x += points[k].x;
@@ -72,7 +72,7 @@ pair<long double, long double> calculateCoefficients(vector<Point> &points, int 
  * @param Constant term of the line equation
  * @return Square of distance
 */
-long double findDistance(long long x, long long y, long double A, long double B) {
+long double findDistance(long double x, long double y, long double A, long double B) {
 
     return ((long double)A*x - y + B)*((long double)A*x - y + B);
 }
@@ -132,50 +132,50 @@ signed main()
     //for(int i=1;i<=n;i++) cout<<dp[i]<<" ";
     //cout<<endl;
     
-    ofstream outputFile;
-    outputFile.open("data.txt");
+    //ofstream outputFile;
+    //outputFile.open("data.txt");
 
-    outputFile<<n<<endl;
-    for(int i=0;i<n;i++) {
-        outputFile<<points[i].x<<" "<<points[i].y<<endl;
-    }
+    //outputFile<<n<<endl;
+    //for(int i=0;i<n;i++) {
+    //    outputFile<<points[i].x<<" "<<points[i].y<<endl;
+    //}
 
-    int pos = n-1;
-    int cnt=1;
-    vector<int> final_indices = {n-1};
-    while(minPrevIndex[pos]!=-1) {
-        final_indices.push_back(minPrevIndex[pos]);
-        //cout<<minPrevIndex[pos]<<" ";
-        cnt++;
-        pos = minPrevIndex[pos];
-    }
-    final_indices.push_back(-1);
-    //outputFile<<-1<<endl;
+    //int pos = n-1;
+    //int cnt=1;
+    //vector<int> final_indices = {n-1};
+    //while(minPrevIndex[pos]!=-1) {
+    //    final_indices.push_back(minPrevIndex[pos]);
+    //    //cout<<minPrevIndex[pos]<<" ";
+    //    cnt++;
+    //    pos = minPrevIndex[pos];
+    //}
+    //final_indices.push_back(-1);
+    ////outputFile<<-1<<endl;
 
-    outputFile<<cnt<<endl;
-    for(int i=0;i<(int)final_indices.size()-1;i++) {
-        pair<long double, long double> coeff = calculateCoefficients(points, final_indices[i], final_indices[i+1]+1);
+    //outputFile<<cnt<<endl;
+    //for(int i=0;i<(int)final_indices.size()-1;i++) {
+    //    pair<long double, long double> coeff = calculateCoefficients(points, final_indices[i], final_indices[i+1]+1);
 
-        long double A = coeff.first;
-        long double B = coeff.second;
+    //    long double A = coeff.first;
+    //    long double B = coeff.second;
 
-        outputFile<<points[final_indices[i+1]+1].x<<" "<<A*(points[final_indices[i+1]+1]).x+B<<" "<<points[final_indices[i]].x<<" "<<A*(points[final_indices[i]]).x+B
-            <<endl;
-    }
+    //    outputFile<<points[final_indices[i+1]+1].x<<" "<<A*(points[final_indices[i+1]+1]).x+B<<" "<<points[final_indices[i]].x<<" "<<A*(points[final_indices[i]]).x+B
+    //        <<endl;
+    //}
 
-    outputFile<<dp[n]<<endl;
+    //outputFile<<dp[n]<<endl;
 
 
 
-    cout<<"line count is: "<<cnt<<endl;
-    cout<<fixed<<setprecision(10)<<dp[n]<<endl;
+    //cout<<"line count is: "<<cnt<<endl;
+    //cout<<fixed<<setprecision(10)<<dp[n]<<endl;
 
-    int who = RUSAGE_SELF;
-    struct rusage usage;
-    getrusage(who, &usage);
+    //int who = RUSAGE_SELF;
+    //struct rusage usage;
+    //getrusage(who, &usage);
 
-    auto stopTime = curTime();
-    auto duration = duration_cast<microseconds>(stopTime - startTime);
-    cout<<"Program ran for "<<(long double)duration.count()/1e6<<" "<<"seconds"<<endl;
-    cout<<"Program took up a maximum memory of: "<<usage.ru_idrss+usage.ru_isrss<<"Kb"<<endl;
+    //auto stopTime = curTime();
+    //auto duration = duration_cast<microseconds>(stopTime - startTime);
+    //cout<<"Program ran for "<<(long double)duration.count()/1e6<<" "<<"seconds"<<endl;
+    //cout<<"Program took up a maximum memory of: "<<usage.ru_idrss+usage.ru_isrss<<"Kb"<<endl;
 }
